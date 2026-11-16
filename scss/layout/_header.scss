@@ -5,6 +5,39 @@
 
 // Настройка шапки сайта
 
+.header__auth {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 14px;
+  font-weight: 500;
+
+  &-user {
+    color: v.$TextBlack;
+    max-width: 120px;
+    overflow: hidden;
+    text-overflow: hidden;
+    white-space: nowrap;
+  }
+
+  &-btn {
+    padding: 6px 14px;
+    border-radius: 62px;
+    background-color: v.$DarknessBaseBackground;
+    color: v.$TextBlack;
+    font-size: 13px;
+    font-weight: 500;
+    transition: background-color 0.2s ease, color 0.2s ease;
+
+    &-hover {
+      background-color: v.$BlockBlack;
+      color: v.$TextWhite;
+    }
+  }
+}
+
+
+
 .top-bar {
   position: relative;
   width: 100%;
@@ -106,6 +139,8 @@
       }
     }
   }
+
+
 
   &__search {
     flex: 1;

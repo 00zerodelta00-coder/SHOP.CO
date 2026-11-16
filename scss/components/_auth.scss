@@ -1,0 +1,155 @@
+@use '../abstracts/variables' as v;
+
+.auth-section {
+  max-width: 1240px;
+  margin: 40px auto 80px;
+  padding: 0 16px;
+  display: flex;
+  justify-content: center;
+}
+
+.auth-card {
+  width: 100%;
+  max-width: 500px;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: 20px;
+  padding: 40px 36px;
+  background-color: v.$BaseBackground;
+
+  @media (max-width: 576px) {
+    padding: 28px 20px;
+  }
+
+  &__title {
+    font-family: 'Integral CF', sans-serif;
+    font-size: 32px;
+    line-height: 1.15;
+    font-weight: 700;
+    text-transform: uppercase;
+    text-align: center;
+    color: v.$TextBlack;
+    margin-bottom: 10px;
+
+    @media (max-width: 576px) {
+      font-size: 26px;
+    }
+  }
+
+  &__subtitle {
+    font-family: 'Satoshi-Variable', sans-serif;
+    font-size: 16px;
+    color: v.$TextGray;
+    text-align: center;
+    margin-bottom: 28px;
+  }
+
+  &__footer {
+    margin-top: 24px;
+    text-align: center;
+    font-size: 15px;
+    color: v.$TextGray;
+
+    a {
+      color: v.$TextBlack;
+      font-weight: 700;
+      text-decoration: underline;
+      margin-left: 4px;
+
+      &:hover {
+        opacity: 0.75;
+      }
+    }
+  }
+}
+
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+
+  &__server-error {
+    display: none;
+    background-color: v.$BlockRed;
+    color: v.$TextRed;
+    font-size: 14px;
+    font-weight: 500;
+    padding: 12px 16px;
+    border-radius: 12px;
+    text-align: center;
+
+    &--visible {
+      display: block;
+    }
+  }
+
+  &__submit {
+    width: 100%;
+    height: 52px;
+    margin-top: 6px;
+    background-color: v.$BlockBlack;
+    color: v.$TextWhite;
+    border-radius: 62px;
+    font-family: 'Satoshi-Variable', sans-serif;
+    font-size: 16px;
+    font-weight: 500;
+    transition: opacity 0.2s ease;
+
+    &:hover:not(:disabled) {
+      opacity: 0.85;
+    }
+
+    &:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+  }
+}
+
+.auth-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+
+  &__label {
+    font-family: 'Satoshi-Variable', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    color: v.$TextBlack;
+  }
+
+  &__input {
+    width: 100%;
+    height: 48px;
+    padding: 12px 20px;
+    border-radius: 62px;
+    background-color: v.$DarknessBaseBackground;
+    border: 1.5px solid transparent;
+    font-family: 'Satoshi-Variable', sans-serif;
+    font-size: 16px;
+    color: v.$TextBlack;
+    transition: border-color 0.2s ease, background-color 0.2s ease;
+
+    &::placeholder {
+      color: rgba(0, 0, 0, 0.4);
+    }
+
+    &:focus {
+      background-color: v.$BaseBackground;
+      border-color: v.$BlockBlack;
+    }
+  }
+
+  &__error {
+    font-size: 13px;
+    color: v.$TextRed;
+    min-height: 18px;
+    padding-left: 16px;
+  }
+
+  &--error {
+    .auth-field__input {
+      border-color: v.$TextRed;
+      background-color: #fff8f8;
+    }
+  }
+}

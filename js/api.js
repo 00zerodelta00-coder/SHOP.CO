@@ -1,10 +1,31 @@
 export const BASE_URL = 'http://localhost:8000';
 export const IMAGE_BASE_URL = `${BASE_URL}/static/images`;
+export const TOKEN_KEY = 'accessToken';
+export const USER_KEY = 'userData';
+
 
 export async function getProducts(params = {}) {
     const query = new URLSearchParams(params).toString();
     const endpoint = query ? `/products?${query}` : '/products';
     return await request(endpoint);
+}
+
+export async function registerUser({name, email, password}) {
+    return await request('/auth/register', {
+        method: 'POST',
+        body: JSON.stringify({ name, email, password }),
+    });
+}
+
+export async function loginUser({ email, password }) {
+    return await request('/auth/login', {
+        method: 'POST',
+        body: JSON.stringify({ email, password }),
+    });
+}
+
+export async function getMe() {
+    return await request('/auth/me');
 }
 
 async function request(endpoint, options = {}) { // перевод функции в промис
@@ -35,4 +56,42 @@ async function request(endpoint, options = {}) { // перевод функци�
         console.error(`ошибка при запросе ${endpoint}`, error.message);
         throw error; // кидаем ошибку дальше
     }
+}
+
+// crud
+
+
+
+export async function getProductById(id) {
+    return await request(`/products/${id}`);
+}
+
+export async function getCart() {
+    return await request('/cart');
+}
+
+export async function addToCartApi({ productId, size, color, quantity = 1 }) {
+    return await request('/cart/items', {
+        method: 'POST',
+        body: JSON.stringify({ productId, size, color, quantity }),
+    });
+}
+
+export async function updateCartItemApi(itemId, quantity) {
+    return await request(`/cart/items/${itemId}`, {
+        method: 'PATCH',
+        body: JSON.stringify({ quantity }),
+    });
+}
+
+export async function deleteCartItemApi(itemId) {
+    return await request(`/cart/items/${itemId}`, {
+        method: 'DELETE',
+    });
+}
+
+export async function clearCartApi() {
+    return await request('/cart', {
+        method: 'DELETE',
+    });
 }

@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SHOP.CO - Sign Up</title>
+    <link href="https://api.fontshare.com/v2/css?f[]=satoshi@400,500,700,900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="./scss/style.css">
+</head>
+
+<body>
+
+    <div class="top-bar">
+        <p class="top-bar__text">
+            Sign up and get 20% off to your first order.
+            <a href="register.html">Sign Up Now</a>
+        </p>
+        <button type="button" class="top-bar__close" aria-label="close banner">
+            <img src="./assest/icons/Cross.svg" alt="close">
+        </button>
+    </div>
+
+    <header class="header">
+        <div class="header__inner">
+            <div class="header__logo">
+                <a href="index.html">
+                    <img src="./assest/icons/SHOP.CO.svg" alt="SHOP.CO">
+                </a>
+            </div>
+
+            <nav class="header__nav">
+                <a href="Category.html">Shop <img src="./assest/icons/CornerDown.svg" alt="arrow-down"></a>
+                <a href="#">On Sale</a>
+                <a href="#">New Arrivals</a>
+                <a href="#">Brands</a>
+            </nav>
+
+            <form action="/search" method="get" class="header__search">
+                <img src="./assest/icons/Loop.svg" alt="search-icon">
+                <input type="search" placeholder="Search for products...">
+            </form>
+
+            <div class="header__actions">
+                <a href="Cart.html" aria-label="cart">
+                    <img src="./assest/icons/Cart.svg" alt="cart">
+                </a>
+                <a href="login.html" aria-label="profile">
+                    <img src="./assest/icons/Profile.svg" alt="profile">
+                </a>
+            </div>
+        </div>
+        <hr class="header__divider">
+    </header>
+
+    <main>
+        <nav class="breadcrumbs" aria-label="breadcrumbs">
+            <a href="index.html">Home</a>
+            <img src="./assest/icons/CornerRight.svg" alt="arrow">
+            <span class="breadcrumbs__current">Sign Up</span>
+        </nav>
+
+        <section class="auth-section">
+            <div class="auth-card">
+                <h1 class="auth-card__title">CREATE ACCOUNT</h1>
+                <p class="auth-card__subtitle">Sign up and get 20% off your first order</p>
+
+                <form class="auth-form" id="registerForm" novalidate>
+                    <div class="auth-form__server-error" id="registerServerError"></div>
+
+                    <div class="auth-field" id="nameField">
+                        <label class="auth-field__label" for="registerName">Name</label>
+                        <input class="auth-field__input" type="text" id="registerName" name="name"
+                            placeholder="Enter your name" required>
+                        <span class="auth-field__error" id="registerNameError"></span>
+                    </div>
+
+                    <div class="auth-field" id="emailField">
+                        <label class="auth-field__label" for="registerEmail">Email</label>
+                        <input class="auth-field__input" type="email" id="registerEmail" name="email"
+                            placeholder="Enter your email" required>
+                        <span class="auth-field__error" id="registerEmailError"></span>
+                    </div>
+
+                    <div class="auth-field" id="passwordField">
+                        <label class="auth-field__label" for="registerPassword">Password</label>
+                        <input class="auth-field__input" type="password" id="registerPassword" name="password"
+                            placeholder="At least 6 characters" minlength="6" required>
+                        <span class="auth-field__error" id="registerPasswordError"></span>
+                    </div>
+
+                    <div class="auth-field" id="confirmPasswordField">
+                        <label class="auth-field__label" for="registerConfirmPassword">Confirm Password</label>
+                        <input class="auth-field__input" type="password" id="registerConfirmPassword"
+                            name="confirmPassword" placeholder="Repeat your password" minlength="6" required>
+                        <span class="auth-field__error" id="registerConfirmPasswordError"></span>
+                    </div>
+
+                    <button type="submit" class="auth-form__submit" id="registerSubmitBtn">
+                        Sign Up
+                    </button>
+                </form>
+
+                <p class="auth-card__footer">
+                    Already have an account?
+                    <a href="login.html">Sign In</a>
+                </p>
+            </div>
+        </section>
+    </main>
+
+    <section class="newsletter">
+        <h2 class="newsletter__title">STAY UPTO DATE ABOUT OUR LATEST OFFERS</h2>
+        <form class="newsletter__form">
+            <div class="newsletter__input-wrap">
+                <img src="./assest/icons/Mail.svg" alt="mail">
+                <input type="email" placeholder="Enter your email address" required>
+            </div>
+            <button class="newsletter__submit" type="submit">Subscribe to Newsletter</button>
+        </form>
+    </section>
+
+    <footer class="footer">
+        <div class="footer__main">
+            <div class="footer__brand">
+                <a href="index.html">
+                    <img src="./assest/icons/SHOP.CO.svg" alt="SHOP.CO" class="footer__logo-img">
+                </a>
+                <p>We have clothes that suits your style and which you’re proud to wear. From women to men.</p>
+                <div class="footer__socials">
+                    <a href="#" class="footer__social-btn" aria-label="twitter"><img src="./assest/icons/Twitter.svg"
+                            alt="twitter"></a>
+                    <a href="#" class="footer__social-btn footer__social-btn--facebook" aria-label="facebook"><img
+                            src="./assest/icons/facebook.svg" alt="facebook"></a>
+                    <a href="#" class="footer__social-btn" aria-label="instagram"><img
+                            src="./assest/icons/Instagram.svg" alt="instagram"></a>
+                    <a href="#" class="footer__social-btn" aria-label="github"><img src="./assest/icons/GitHub.svg"
+                            alt="github"></a>
+                </div>
+            </div>
+
+            <div class="footer__nav">
+                <h5>Company</h5>
+                <a href="#">About</a>
+                <a href="#">Features</a>
+                <a href="#">Works</a>
+                <a href="#">Career</a>
+            </div>
+
+            <div class="footer__nav">
+                <h5>Help</h5>
+                <a href="#">Customer Support</a>
+                <a href="#">Delivery Details</a>
+                <a href="#">Terms & Conditions</a>
+                <a href="#">Privacy Policy</a>
+            </div>
+
+            <div class="footer__nav">
+                <h5>FAQ</h5>
+                <a href="#">Account</a>
+                <a href="#">Manage Deliveries</a>
+                <a href="#">Orders</a>
+                <a href="#">Payments</a>
+            </div>
+
+            <div class="footer__nav">
+                <h5>Resources</h5>
+                <a href="#">Free eBooks</a>
+                <a href="#">Development Tutorial</a>
+                <a href="#">How to - Blog</a>
+                <a href="#">Youtube Playlist</a>
+            </div>
+        </div>
+
+        <hr class="footer__divider">
+
+        <div class="footer__bottom">
+            <p>Shop.co © 2000-2026, All Rights Reserved</p>
+            <div class="footer__payments">
+                <div class="payment-card"><img src="./assest/icons/VISA.svg" alt="Visa"></div>
+                <div class="payment-card"><img src="./assest/icons/MasterCard.svg" alt="MasterCard"></div>
+                <div class="payment-card"><img src="./assest/icons/PayPal.svg" alt="PayPal"></div>
+                <div class="payment-card"><img src="./assest/icons/ApplePay.svg" alt="ApplePay"></div>
+                <div class="payment-card"><img src="./assest/icons/GooglePay.svg" alt="GooglePay"></div>
+            </div>
+        </div>
+    </footer>
+    <script type="module" src="./js/auth.js"></script>
+</body>
+
+</html>

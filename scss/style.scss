@@ -15,6 +15,7 @@
 @use './components/product-detail';
 @use './components/home';
 @use './components/cart';
+@use './components/auth';
 
 // Подключение шапки и подвала
 @use './layout/footer';

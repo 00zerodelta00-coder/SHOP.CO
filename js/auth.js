@@ -1,3 +1,4 @@
+import { showToast } from './toast.js';
 import { registerUser, loginUser, TOKEN_KEY, USER_KEY } from './api.js';
 
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -12,10 +13,27 @@ function saveAuthSession(data) {
     }
 }
 
+// Проверка и показ отложенного уведомления после редиректа
+function checkPendingToast() {
+    const raw = sessionStorage.getItem('toastOnLoad');
+    if (!raw) return;
+    sessionStorage.removeItem('toastOnLoad');
+    try {
+        const { message, type } = JSON.parse(raw);
+        showToast(message, type);
+    } catch {
+        // ignore
+    }
+}
+
 // Выход из аккаунта
 export function logoutUser() {
     localStorage.removeItem(TOKEN_KEY);
     localStorage.removeItem(USER_KEY);
+    sessionStorage.setItem('toastOnLoad', JSON.stringify({
+        message: 'Вы вышли из аккаунта',
+        type: 'info',
+    }));
     window.location.href = 'login.html';
 }
 
@@ -128,9 +146,15 @@ function initLoginForm() {
 
             const response = await loginUser({ email, password });
             saveAuthSession(response);
+            sessionStorage.setItem('toastOnLoad', JSON.stringify({
+                message: 'Вы успешно вошли в аккаунт',
+                type: 'success',
+            }));
             window.location.href = 'index.html';
         } catch (error) {
-            setServerError('loginServerError', error.message || 'Неверный email или пароль');
+            const msg = error.message || 'Неверный email или пароль';
+            setServerError('loginServerError', msg);
+            showToast(msg, 'error');
         } finally {
             submitBtn.disabled = false;
             submitBtn.textContent = 'Sign In';
@@ -204,9 +228,15 @@ function initRegisterForm() {
 
             const response = await registerUser({ name, email, password });
             saveAuthSession(response);
+            sessionStorage.setItem('toastOnLoad', JSON.stringify({
+                message: 'Регистрация прошла успешно!',
+                type: 'success',
+            }));
             window.location.href = 'index.html';
         } catch (error) {
-            setServerError('registerServerError', error.message || 'Не удалось зарегистрироваться');
+            const msg = error.message || 'Не удалось зарегистрироваться';
+            setServerError('registerServerError', msg);
+            showToast(msg, 'error');
         } finally {
             submitBtn.disabled = false;
             submitBtn.textContent = 'Sign Up';
@@ -215,6 +245,7 @@ function initRegisterForm() {
 }
 
 function initAuth() {
+    checkPendingToast();
     updateHeaderAuth();
     initLoginForm();
     initRegisterForm();

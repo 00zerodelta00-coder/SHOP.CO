@@ -1,3 +1,4 @@
+import { showToast } from './toast.js';
 import { getProducts, getProductById, IMAGE_BASE_URL } from './api.js';
 import { handleAddToCart } from './cart.js';
 
@@ -93,15 +94,6 @@ function createProductCard(product, index) {
                         <span class="product-card__badge">-${product.discount}%</span>
                     ` : ''}
                 </div>
-                <button 
-                    type="button" 
-                    class="product-card__add-btn" 
-                    data-add-cart-id="${product.id}"
-                    data-default-size="${defaultSize}"
-                    data-default-color="${defaultColor}"
-                >
-                    Add to Cart
-                </button>
             </article>
         </li>
     `;
@@ -467,3 +459,5 @@ if (document.readyState === 'loading') {
 } else {
     initApp();
 }
+
+

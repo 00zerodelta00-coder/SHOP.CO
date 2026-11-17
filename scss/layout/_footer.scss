@@ -6,19 +6,19 @@
 // Настройка подвала сайта
 
 .newsletter {
-  width: 100%;                  // растягиваем на всю доступную ширину
-  max-width: 1240px;            // но не шире 1240px из макета
-  margin: 0 auto;               // центрируем плашку
-  padding: 36px 64px;           // внутренние отступы из Figma
+  width: 100%; // растягиваем на всю доступную ширину
+  max-width: 1240px; // но не шире 1240px из макета
+  margin: 0 auto; // центрируем плашку
+  padding: 36px 64px; // внутренние отступы из Figma
   background-color: v.$BlockBlack;
   border-radius: 20px;
-  
+
   display: flex;
   align-items: center;
   justify-content: space-between; // расталкивает заголовок влево, а форму вправо
   gap: 40px;
 
-  box-sizing: border-box;       // чтобы padding не ломал ширину 1240px
+  box-sizing: border-box; // чтобы padding не ломал ширину 1240px
   transform: translateY(50%);
   position: relative;
   z-index: 10;
@@ -38,8 +38,8 @@
     color: v.$TextWhite;
     max-width: 551px;
     width: 100%;
-    margin: 0;                  // убираем дефолтные отступы h2
-    flex-shrink: 0;             // запрещаем flexbox сдавливать ширину текста
+    margin: 0; // убираем дефолтные отступы h2
+    flex-shrink: 0; // запрещаем flexbox сдавливать ширину текста
 
     @media (max-width: 768px) {
       font-size: 28px;
@@ -52,9 +52,9 @@
     display: flex;
     flex-direction: column;
     gap: 14px;
-    width: 349px;               // точная ширина формы из макета
-    flex-shrink: 0;             // запрещаем форме менять ширину
-    margin-left: auto;          // ГАРАНТИЯ: железно выталкивает форму к правому краю
+    width: 349px; // точная ширина формы из макета
+    flex-shrink: 0; // запрещаем форме менять ширину
+    margin-left: auto; // ГАРАНТИЯ: железно выталкивает форму к правому краю
 
     @media (max-width: 768px) {
       width: 100%;
@@ -221,7 +221,7 @@
   &__payments {
     display: flex;
     align-items: center;
-    
+
     .payment-card {
       display: flex;
       align-items: center;

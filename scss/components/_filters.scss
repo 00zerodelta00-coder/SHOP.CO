@@ -172,8 +172,13 @@
     font-size: 14px;
     font-weight: 500;
 
-    &--min { left: 0%; }
-    &--max { left: 60%; }
+    &--min {
+      left: 0%;
+    }
+
+    &--max {
+      left: 60%;
+    }
   }
 
   &__colors {
@@ -232,14 +237,14 @@
     opacity: 0;
     pointer-events: none;
 
-    &:checked + .color-option__visual::after {
+    &:checked+.color-option__visual::after {
       content: "✓";
       color: v.$TextWhite;
       font-size: 14px;
       font-weight: bold;
     }
 
-    &[value="White"]:checked + .color-option__visual::after {
+    &[value="White"]:checked+.color-option__visual::after {
       color: v.$TextBlack;
     }
   }
@@ -265,7 +270,7 @@
     opacity: 0;
     pointer-events: none;
 
-    &:checked + .size-pill__label {
+    &:checked+.size-pill__label {
       background-color: v.$BlockBlack;
       color: v.$TextWhite;
     }

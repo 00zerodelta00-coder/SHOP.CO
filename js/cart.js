@@ -1,3 +1,4 @@
+import { showToast } from './toast.js';
 import {
     getCart,
     addToCartApi,

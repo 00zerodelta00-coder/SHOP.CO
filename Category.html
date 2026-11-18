@@ -11,43 +11,49 @@
 
 <body>
 
-  <!-- верхняя рекламная плашка -->
+  <!-- #верхняяплашка #акция #баннерсверху #скидка20 #topbar -->
+  <!-- самая верхняя черная полоска с предложением скидки и кнопкой закрытия -->
   <div class="top-bar">
     <p class="top-bar__text">
       Sign up and get 20% off to your first order.
-      <a href="#">Sign Up Now</a>
+      <a href="register.html">Sign Up Now</a>
     </p>
     <button type="button" class="top-bar__close" aria-label="close banner">
       <img src="./assest/icons/Cross.svg" alt="close">
     </button>
   </div>
 
-  <!-- шапка сайта -->
+  <!-- #шапка #хедер #меню #поиск #навигация #header -->
+  <!-- главная шапка сайта с логотипом меню строкой поиска и иконками корзины и профиля -->
   <header class="header">
     <div class="header__inner">
+      <!-- #логотип #logo -->
       <div class="header__logo">
         <a href="index.html">
           <img src="./assest/icons/SHOP.CO.svg" alt="SHOP.CO">
         </a>
       </div>
 
+      <!-- #навигация #ссылкишапки #nav -->
       <nav class="header__nav">
-        <a href="index.html">Shop <img src="./assest/icons/CornerDown.svg" alt="arrow-down"></a>
+        <a href="Category.html">Shop <img src="./assest/icons/CornerDown.svg" alt="arrow down"></a>
         <a href="#">On Sale</a>
         <a href="#">New Arrivals</a>
         <a href="#">Brands</a>
       </nav>
 
+      <!-- #поиск #строкапоиска #search -->
       <form action="/search" method="get" class="header__search">
-        <img src="./assest/icons/Loop.svg" alt="search-icon">
+        <img src="./assest/icons/Loop.svg" alt="search">
         <input id="searchInput" type="search" name="search" placeholder="Search for products...">
       </form>
 
+      <!-- #иконкишапки #корзина #профиль #actions -->
       <div class="header__actions">
-        <a href="cart.html" aria-label="cart">
+        <a href="Cart.html" aria-label="cart">
           <img src="./assest/icons/Cart.svg" alt="cart">
         </a>
-        <a href="#" aria-label="profile">
+        <a href="login.html" aria-label="profile">
           <img src="./assest/icons/Profile.svg" alt="profile">
         </a>
       </div>
@@ -56,26 +62,30 @@
   </header>
 
   <main>
-    <!-- хлебные крошки -->
+    <!-- #хлебныекрошки #навигацияпуть #крошки #breadcrumbs -->
+    <!-- навигационная цепочка под шапкой для возврата на главную -->
     <nav class="breadcrumbs" aria-label="breadcrumbs">
       <a href="index.html">Home</a>
       <img src="./assest/icons/CornerRight.svg" alt="arrow">
       <span class="breadcrumbs__current">Casual</span>
     </nav>
 
-    <!-- основной макет каталога: фильтры слева и товары справа -->
+    <!-- #сеткакаталога #макеткаталога #cataloglayout #каталог -->
+    <!-- двухколоночный макет: панель фильтров слева и сетка товаров справа -->
     <div class="catalog-layout">
-      <!-- боковая панель с фильтрами -->
+
+      <!-- #фильтры #сайдбар #панельфильтров #filters -->
+      <!-- левая боковая панель фильтрации по категориям цене цветам размерам и стилю -->
       <aside class="filters">
         <form class="filters__form">
           <div class="filters__header">
             <h3>Filters</h3>
-            <img src="./assest/icons/FilterIco.svg" alt="filters-icon">
+            <img src="./assest/icons/FilterIco.svg" alt="filters icon">
           </div>
 
           <hr class="filters__divider">
 
-          <!-- категории одежды -->
+          <!-- #категории #одежда #categorylist -->
           <ul class="filters__category-list">
             <li class="filters__category-item">
               <button type="button">T-shirts</button>
@@ -101,11 +111,11 @@
 
           <hr class="filters__divider">
 
-          <!-- блок цены -->
+          <!-- #ценафильтр #диапазонцен #ползунокцены #price -->
           <div class="filters__price">
             <div class="filters__price-header">
               <h3>Price</h3>
-              <img src="./assest/icons/CornerUp.svg" alt="arrow-up">
+              <img src="./assest/icons/CornerUp.svg" alt="arrow up">
             </div>
             <div class="filters__range-slider">
               <div class="filters__range-track"></div>
@@ -120,58 +130,58 @@
 
           <hr class="filters__divider">
 
-          <!-- выбор цвета 5x2 -->
+          <!-- #цветафильтр #палитра #выборцвета #colors -->
           <fieldset class="filters__colors">
             <legend>Colors</legend>
             <label class="color-option">
               <input type="checkbox" name="colors" value="Green" class="color-option__input">
-              <span class="color-option__visual" style="background-color: #00C12B;"></span>
+              <span class="color-option__visual color-option__visual--green"></span>
             </label>
             <label class="color-option">
               <input type="checkbox" name="colors" value="Red" class="color-option__input">
-              <span class="color-option__visual" style="background-color: #F50606;"></span>
+              <span class="color-option__visual color-option__visual--red"></span>
             </label>
             <label class="color-option">
               <input type="checkbox" name="colors" value="Yellow" class="color-option__input">
-              <span class="color-option__visual" style="background-color: #F5DD06;"></span>
+              <span class="color-option__visual color-option__visual--yellow"></span>
             </label>
             <label class="color-option">
               <input type="checkbox" name="colors" value="Orange" class="color-option__input">
-              <span class="color-option__visual" style="background-color: #F57906;"></span>
+              <span class="color-option__visual color-option__visual--orange"></span>
             </label>
             <label class="color-option">
               <input type="checkbox" name="colors" value="Lightblue" class="color-option__input">
-              <span class="color-option__visual" style="background-color: #06CAF5;"></span>
+              <span class="color-option__visual color-option__visual--lightblue"></span>
             </label>
             <label class="color-option">
               <input type="checkbox" name="colors" value="Blue" class="color-option__input">
-              <span class="color-option__visual" style="background-color: #063AF5;"></span>
+              <span class="color-option__visual color-option__visual--blue"></span>
             </label>
             <label class="color-option">
               <input type="checkbox" name="colors" value="Purple" class="color-option__input">
-              <span class="color-option__visual" style="background-color: #7D06F5;"></span>
+              <span class="color-option__visual color-option__visual--purple"></span>
             </label>
             <label class="color-option">
               <input type="checkbox" name="colors" value="Pink" class="color-option__input">
-              <span class="color-option__visual" style="background-color: #F506A4;"></span>
+              <span class="color-option__visual color-option__visual--pink"></span>
             </label>
             <label class="color-option">
               <input type="checkbox" name="colors" value="White" class="color-option__input">
-              <span class="color-option__visual" style="background-color: #FFFFFF;"></span>
+              <span class="color-option__visual color-option__visual--white"></span>
             </label>
             <label class="color-option">
               <input type="checkbox" name="colors" value="Black" class="color-option__input">
-              <span class="color-option__visual" style="background-color: #000000;"></span>
+              <span class="color-option__visual color-option__visual--black"></span>
             </label>
           </fieldset>
 
           <hr class="filters__divider">
 
-          <!-- выбор размера -->
+          <!-- #размерыфильтр #списокразмеров #size -->
           <div class="filters__size">
             <div class="filters__size-header">
               <h3>Size</h3>
-              <img src="./assest/icons/CornerUp.svg" alt="arrow-up">
+              <img src="./assest/icons/CornerUp.svg" alt="arrow up">
             </div>
             <div class="filters__size-list">
               <label class="size-pill"><input type="checkbox" name="size" value="XX-Small"
@@ -197,11 +207,11 @@
 
           <hr class="filters__divider">
 
-          <!-- стиль одежды -->
+          <!-- #стильодежды #dressstyle -->
           <div class="filters__dress-style">
             <div class="filters__style-header">
               <legend>Dress Style</legend>
-              <img src="./assest/icons/CornerUp.svg" alt="arrow-up">
+              <img src="./assest/icons/CornerUp.svg" alt="arrow up">
             </div>
             <ul class="filters__category-list">
               <li class="filters__category-item">
@@ -227,7 +237,8 @@
         </form>
       </aside>
 
-      <!-- секция каталога товаров -->
+      <!-- #списоктоваров #карточкикаталога #catalogmain #сеткатоваров -->
+      <!-- правая часть каталога с шапкой счетчиком товаров сеткой карточек и пагинацией -->
       <section class="catalog-main">
         <div class="catalog-main__header">
           <h2>Casual</h2>
@@ -236,17 +247,19 @@
             <div class="catalog-main__sort">
               <span>Sort by:</span>
               <button type="button">Most Popular</button>
-              <img src="./assest/icons/CornerDown.svg" alt="arrow-down">
+              <img src="./assest/icons/CornerDown.svg" alt="arrow down">
             </div>
           </div>
         </div>
-        <ul class="product-grid" id="productsContainer"></ul>
 
-        <!-- контейнер сетки товаров 3x3 (заполняется из js/catalog.js) -->
+        <!-- #контейнеркарточек #productgrid #productsContainer -->
+        <!-- сюда из js/product.js автоматически отрисовываются карточки товаров 3x3 -->
+        <ul class="product-grid" id="productsContainer"></ul>
 
         <hr class="catalog-main__divider">
 
-        <!-- пагинация -->
+        <!-- #пагинация #страницы #листалка #pagination -->
+        <!-- кнопки переключения страниц каталога управляются из js/product.js -->
         <nav class="pagination" aria-label="pagination">
           <button type="button" class="pagination__arrow pagination__arrow--prev">
             <img src="./assest/icons/ArrowLeft.svg" alt="prev">
@@ -270,8 +283,9 @@
     </div>
   </main>
 
-  <!-- баннер подписки на новости -->
-  <div class="newsletter">
+  <!-- #рассылка #подписка #черныйбаннер #newsletter -->
+  <!-- черный блок подписки на рассылку перед подвалом -->
+  <section class="newsletter">
     <h2 class="newsletter__title">STAY UPTO DATE ABOUT<br>OUR LATEST OFFERS</h2>
     <form class="newsletter__form" action="/subscribe" method="post">
       <div class="newsletter__input-wrap">
@@ -280,9 +294,10 @@
       </div>
       <button type="submit" class="newsletter__submit">Subscribe to Newsletter</button>
     </form>
-  </div>
+  </section>
 
-  <!-- подвал сайта -->
+  <!-- #подвал #футер #контакты #оплата #footer -->
+  <!-- подвал сайта с логотипом соцсетями меню ссылок и платежными системами -->
   <footer class="footer">
     <div class="footer__main">
       <div class="footer__brand">
@@ -292,13 +307,13 @@
         <p>We have clothes that suits your style and which you’re proud to wear. From women to men.</p>
         <div class="footer__socials">
           <a href="#" class="footer__social-btn" aria-label="twitter"><img src="./assest/icons/Twitter.svg"
-              alt="твиттер"></a>
+              alt="twitter"></a>
           <a href="#" class="footer__social-btn footer__social-btn--facebook" aria-label="facebook"><img
-              src="./assest/icons/facebook.svg" alt="фейсбук"></a>
+              src="./assest/icons/facebook.svg" alt="facebook"></a>
           <a href="#" class="footer__social-btn" aria-label="instagram"><img src="./assest/icons/Instagram.svg"
-              alt="инстаграм"></a>
+              alt="instagram"></a>
           <a href="#" class="footer__social-btn" aria-label="github"><img src="./assest/icons/GitHub.svg"
-              alt="гитхаб"></a>
+              alt="github"></a>
         </div>
       </div>
 
@@ -348,6 +363,8 @@
       </div>
     </div>
   </footer>
+
+  <!-- #скрипты #модули #scripts -->
   <script type="module" src="./js/product.js"></script>
   <script type="module" src="./js/auth.js"></script>
 </body>

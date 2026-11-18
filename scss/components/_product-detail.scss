@@ -1,9 +1,14 @@
-// стили детального просмотра товара
-.product-view {
-    max-width: 1240px;
-    margin: 0 auto;
-    padding: 0 16px 50px;
+// подключение переменных и миксинов
+@use '../abstracts/variables' as v;
+@use '../abstracts/mixins' as m;
 
+// #товардетально #страницатовара #карточкатовара #productview #описаниетовара #обзортовара
+// главный блок страницы Product.html с галереей слева и выбором цвета размера и цены справа
+.product-view {
+    @include m.container;
+    padding-bottom: 50px;
+
+    // #контейнертовара #двеколонки #productcontainer
     &__container {
         display: flex;
         gap: 40px;
@@ -14,7 +19,7 @@
         }
     }
 
-    // галерея
+    // #галерея #фотогалерея #картинкитовара #gallery #слайдерфото
     &__gallery {
         display: flex;
         gap: 14px;
@@ -24,11 +29,12 @@
             width: 100%;
         }
 
-        @media (max-width: 576px) {
+        @media (max-width: v.$BreakpointSmall) {
             flex-direction: column-reverse;
         }
     }
 
+    // #миниатюры #маленькиефото #превьюшки #thumbs
     &__thumbs {
         display: flex;
         flex-direction: column;
@@ -36,17 +42,18 @@
         width: 152px;
         flex-shrink: 0;
 
-        @media (max-width: 576px) {
+        @media (max-width: v.$BreakpointSmall) {
             flex-direction: row;
             width: 100%;
             justify-content: space-between;
         }
     }
 
+    // #кнопкаминиатюры #превьюкнопка #thumbbtn
     &__thumb-btn {
         background: transparent;
         border: 1px solid transparent;
-        border-radius: 20px;
+        border-radius: v.$RadiusCard;
         padding: 0;
         cursor: pointer;
         overflow: hidden;
@@ -54,27 +61,29 @@
 
         &--active,
         &:hover {
-            border-color: #000;
+            border-color: v.$BlockBlack;
         }
     }
 
+    // #картинкаминиатюры #thumbimg
     &__thumb-img {
         width: 100%;
         height: 167px;
         object-fit: cover;
-        background-color: #f0eeed;
+        background-color: v.$CardThumbBackground;
         display: block;
 
-        @media (max-width: 576px) {
+        @media (max-width: v.$BreakpointSmall) {
             height: 106px;
         }
     }
 
+    // #главноефото #большаякартинка #mainimage #фото
     &__main-image {
         flex: 1;
         height: 530px;
-        border-radius: 20px;
-        background-color: #f0eeed;
+        border-radius: v.$RadiusCard;
+        background-color: v.$CardThumbBackground;
         overflow: hidden;
 
         img {
@@ -84,12 +93,12 @@
             display: block;
         }
 
-        @media (max-width: 576px) {
+        @media (max-width: v.$BreakpointSmall) {
             height: 330px;
         }
     }
 
-    // детали
+    // #праваяколонка #деталитовара #характеристики #details
     &__details {
         width: 50%;
 
@@ -98,19 +107,22 @@
         }
     }
 
+    // #названиетовара #заголовоктовара #h1 #producttitle
     &__title {
+        font-family: v.$Font-Display;
         font-size: 40px;
-        font-weight: 900;
+        font-weight: 700;
         text-transform: uppercase;
         line-height: 1.1;
         margin: 0 0 14px 0;
-        color: #000;
+        color: v.$TextBlack;
 
-        @media (max-width: 768px) {
+        @media (max-width: v.$BreakpointMobile) {
             font-size: 26px;
         }
     }
 
+    // #рейтингтовара #оценка #звезды #rating
     &__rating {
         display: flex;
         align-items: center;
@@ -118,21 +130,24 @@
         margin-bottom: 14px;
     }
 
+    // #звездочки #stars
     &__stars {
         display: flex;
         gap: 4px;
     }
 
+    // #цифрарейтинга #балл #score
     &__score {
         font-size: 16px;
         font-weight: 500;
-        color: #000;
+        color: v.$TextBlack;
 
         &-max {
-            color: rgba(0, 0, 0, 0.6);
+            color: v.$TextGray;
         }
     }
 
+    // #блокцены #стоимость #pricebox #ценатовара
     &__price-box {
         display: flex;
         align-items: center;
@@ -140,12 +155,14 @@
         margin-bottom: 14px;
     }
 
+    // #цена #актуальнаяцена #price
     &__price {
         font-size: 32px;
         font-weight: 700;
-        color: #000;
+        color: v.$TextBlack;
     }
 
+    // #стараяцена #перечеркнутаяцена #oldprice
     &__old-price {
         font-size: 32px;
         font-weight: 700;
@@ -153,116 +170,150 @@
         text-decoration: line-through;
     }
 
+    // #скидка #процентскидки #бейдж #discount
     &__discount {
-        background: rgba(255, 51, 51, 0.1);
-        color: #ff3333;
+        background: v.$BlockRed;
+        color: v.$TextRed;
         padding: 4px 14px;
-        border-radius: 62px;
+        border-radius: v.$RadiusPill;
         font-size: 16px;
         font-weight: 500;
     }
 
+    // #описание #текстотоваре #description
     &__description {
-        color: rgba(0, 0, 0, 0.6);
+        color: v.$TextGray;
         font-size: 16px;
         line-height: 1.5;
         margin-bottom: 24px;
     }
 
+    // #линия #разделитель #hr #divider
     &__divider {
         border: none;
-        border-top: 1px solid rgba(0, 0, 0, 0.1);
+        border-top: 1px solid v.$BorderLight;
         margin: 20px 0;
     }
 
+    // #подписьсекции #выберитецвет #выберитеразмер #label
     &__label {
         display: block;
-        color: rgba(0, 0, 0, 0.6);
+        color: v.$TextGray;
         font-size: 16px;
         margin-bottom: 14px;
     }
 
-    // выбор цвета
+    // #выборцвета #цветатовара #colors
     &__colors {
         display: flex;
         gap: 14px;
     }
 
-    // выбор размера
+    // #выборразмера #размерытовара #sizes
     &__sizes {
         display: flex;
         gap: 12px;
         flex-wrap: wrap;
     }
 
-    // действия
+    // #кнопкидействий #купитьблок #actions #добавитьвкорзинублок
     &__actions {
         display: flex;
         gap: 20px;
     }
 
+    // #добавитьвкорзину #кнопкакупить #addtocart #addbtn
     &__add-btn {
+        @include m.btn-pill-dark(52px, 16px);
         flex: 1;
-        padding: 16px 30px;
-        border-radius: 62px;
-        font-size: 16px;
-        font-weight: 500;
-        background: #000;
-        color: #fff;
         border: none;
-        cursor: pointer;
-        transition: opacity 0.2s ease;
-
-        &:hover {
-            opacity: 0.85;
-        }
     }
 }
 
-// кнопки цветов и размеров
+// #кружокцвета #кнопкацвета #colorbtn #выборцветакружок #цветатовара
 .color-btn {
+    @include m.flex-center;
     width: 37px;
     height: 37px;
-    border-radius: 50%;
+    border-radius: v.$RadiusCircle;
     border: none;
     cursor: pointer;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
 
     &--active {
-        box-shadow: 0 0 0 2px #fff, 0 0 0 3px #000;
+        box-shadow: 0 0 0 2px v.$BaseBackground, 0 0 0 3px v.$BlockBlack;
+    }
+
+    &--green {
+        background-color: #00C12B;
+    }
+
+    &--red {
+        background-color: #F50606;
+    }
+
+    &--yellow {
+        background-color: #F5DD06;
+    }
+
+    &--orange {
+        background-color: #F57906;
+    }
+
+    &--cyan {
+        background-color: #06CAF5;
+    }
+
+    &--blue {
+        background-color: #063AF5;
+    }
+
+    &--purple {
+        background-color: #7D06F5;
+    }
+
+    &--pink {
+        background-color: #F506A4;
+    }
+
+    &--white {
+        background-color: #FFFFFF;
+        border: 1px solid v.$BorderMedium;
+    }
+
+    &--black {
+        background-color: #000000;
     }
 }
 
+// #кнопкаразмера #пилюляразмера #sizebtn #размер
 .size-btn {
-    background: #f0f0f0;
+    background: v.$DarknessBaseBackground;
     border: none;
-    border-radius: 62px;
+    border-radius: v.$RadiusPill;
     padding: 12px 24px;
     font-size: 16px;
-    color: rgba(0, 0, 0, 0.6);
+    color: v.$TextGray;
     cursor: pointer;
     transition: all 0.2s ease;
 
     &--active,
     &:hover {
-        background: #000;
-        color: #fff;
+        background: v.$BlockBlack;
+        color: v.$TextWhite;
     }
 }
 
-// счетчик количества
+// #счетчик #количество #плюсминус #quantity #шагколичества
+// блок изменения количества товара (- 1 +) используется и на странице товара и в корзине
 .quantity-control {
-    background: #f0f0f0;
-    border-radius: 62px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+    @include m.flex-between;
+    background: v.$DarknessBaseBackground;
+    border-radius: v.$RadiusPill;
     padding: 14px 20px;
     width: 170px;
     flex-shrink: 0;
 
+    // #кнопкаминус #кнопкаплюс #quantitybtn
     &__btn {
         background: transparent;
         border: none;
@@ -270,38 +321,45 @@
         line-height: 1;
         cursor: pointer;
         padding: 0 8px;
+
+        &:disabled {
+            opacity: 0.35;
+            cursor: not-allowed;
+        }
     }
 
+    // #цифраколичества #значениесчетчика #quantityvalue
     &__value {
         font-size: 16px;
         font-weight: 500;
     }
 }
 
-// табы
+// #табы #вкладки #описаниеиотзывы #detailstabs #переключательвкладок
 .details-tabs {
-    max-width: 1240px;
+    @include m.container;
     margin: 30px auto 40px;
-    padding: 0 16px;
 
+    // #панельвкладок #tabsnav
     &__nav {
         display: flex;
-        border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+        border-bottom: 1px solid v.$BorderLight;
     }
 
+    // #вкладка #кнопкавкладки #tab
     &__tab {
         flex: 1;
         background: transparent;
         border: none;
         padding: 18px 0;
         font-size: 20px;
-        color: rgba(0, 0, 0, 0.6);
+        color: v.$TextGray;
         cursor: pointer;
         position: relative;
         text-align: center;
 
         &--active {
-            color: #000;
+            color: v.$TextBlack;
             font-weight: 500;
 
             &::after {
@@ -311,59 +369,63 @@
                 left: 0;
                 width: 100%;
                 height: 2px;
-                background-color: #000;
+                background-color: v.$BlockBlack;
             }
         }
     }
 }
 
-// секция отзывов
+// #секцияотзывов #всеотзывы #reviewssection #комментариитовара
 .reviews-section {
-    max-width: 1240px;
+    @include m.container;
     margin: 0 auto 60px;
-    padding: 0 16px;
 
+    // #шапкаотзывов #reviewsheader
     &__header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
+        @include m.flex-between;
         margin-bottom: 24px;
     }
 
+    // #заголовокотзывов #reviewstitle
     &__title {
         font-size: 24px;
         font-weight: 700;
         margin: 0;
     }
 
+    // #счетчикотзывов #451 #reviewscount
     &__count {
         font-size: 16px;
         font-weight: 400;
-        color: rgba(0, 0, 0, 0.6);
+        color: v.$TextGray;
     }
 
+    // #кнопкиотзывов #сортировкаотзывов #написатьотзыв #reviewsactions
     &__actions {
         display: flex;
         align-items: center;
         gap: 10px;
     }
 
+    // #селектотзывов #выпадающийсписок #selectwrap
     &__select-wrap {
         position: relative;
         display: inline-block;
     }
 
+    // #выборсортировки #select
     &__select {
         appearance: none;
-        background: #f0f0f0;
+        background: v.$DarknessBaseBackground;
         border: none;
-        border-radius: 62px;
+        border-radius: v.$RadiusPill;
         padding: 14px 44px 14px 20px;
         font-size: 16px;
         font-weight: 500;
         cursor: pointer;
     }
 
+    // #стрелкаселекта #selectarrow
     &__select-arrow {
         position: absolute;
         right: 18px;
@@ -373,32 +435,27 @@
         width: 14px;
     }
 
+    // #кнопкаотзыва #writeareview #writebtn
     &__write-btn {
-        background: #000;
-        color: #fff;
+        @include m.btn-pill-dark(48px, 16px);
         border: none;
-        border-radius: 62px;
-        padding: 14px 24px;
-        font-size: 16px;
-        font-weight: 500;
-        cursor: pointer;
     }
 
+    // #загрузитьеще #кнопкаеще #more
     &__more {
         text-align: center;
         margin-top: 36px;
     }
 }
 
+// #круглаякнопкафильтра #иконкафильтра #btncirclefilter
 .btn-circle-filter {
+    @include m.flex-center;
     width: 48px;
     height: 48px;
-    border-radius: 50%;
-    background: #f0f0f0;
+    border-radius: v.$RadiusCircle;
+    background: v.$DarknessBaseBackground;
     border: none;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
     cursor: pointer;
 
     img {
@@ -406,58 +463,51 @@
     }
 }
 
+// #кнопкаконтур #загрузитьещеотзывы #btnoutline #loadmore
 .btn-outline {
-    background: transparent;
-    border: 1px solid rgba(0, 0, 0, 0.1);
-    border-radius: 62px;
-    padding: 16px 54px;
-    font-size: 16px;
-    font-weight: 500;
-    cursor: pointer;
-    transition: all 0.2s ease;
-
-    &:hover {
-        border-color: #000;
-    }
+    @include m.btn-pill-outline(52px);
+    display: inline-flex;
+    padding: 0 54px;
 }
 
-// карточка отзыва
+// #сеткаотзывов #колонкиотзывов #reviewsgrid
 .reviews-grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: 20px;
 
-    @media (max-width: 768px) {
+    @media (max-width: v.$BreakpointMobile) {
         grid-template-columns: 1fr;
     }
 }
 
+// #карточкаотзыва #боксотзыва #reviewbox #отзывпокупателя
 .review-box {
-    border: 1px solid rgba(0, 0, 0, 0.1);
-    border-radius: 20px;
-    padding: 28px 32px;
+    @include m.bordered-box(28px 32px, v.$RadiusCard);
 
+    // #шапкакарточкиотзыва #звездыименю
     &__header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
+        @include m.flex-between;
         margin-bottom: 12px;
     }
 
+    // #звезды #stars
     &__stars {
         display: flex;
         gap: 4px;
     }
 
+    // #триточки #менюотзыва #menu
     &__menu {
         background: transparent;
         border: none;
-        color: rgba(0, 0, 0, 0.4);
+        color: v.$TextMuted;
         cursor: pointer;
         letter-spacing: 2px;
         font-size: 18px;
     }
 
+    // #авторотзыва #имяигалочка #author
     &__author {
         display: flex;
         align-items: center;
@@ -465,54 +515,51 @@
         margin-bottom: 12px;
     }
 
+    // #имя #name
     &__name {
         font-size: 20px;
         font-weight: 700;
     }
 
+    // #текстотзыва #комментарий #comment
     &__comment {
         font-size: 16px;
         line-height: 1.5;
-        color: rgba(0, 0, 0, 0.6);
+        color: v.$TextGray;
         margin: 0 0 20px 0;
     }
 
+    // #датаотзыва #времяпубликации #date
     &__date {
         font-size: 14px;
         font-weight: 500;
-        color: rgba(0, 0, 0, 0.6);
+        color: v.$TextGray;
         display: block;
     }
 }
 
+// #зеленаягалочка #проверен #verified #badgeverified
 .badge-verified {
+    @include m.flex-center;
     width: 18px;
     height: 18px;
-    background: #01ab31;
-    border-radius: 50%;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
+    background: v.$SuccessGreen;
+    border-radius: v.$RadiusCircle;
 }
 
-// блок похожих товаров
+// #похожиетовары #вамтакжепонравится #relatedproducts #рекомендации
 .related-products {
-    max-width: 1240px;
+    @include m.container;
     margin: 0 auto 80px;
-    padding: 0 16px;
 
+    // #заголовокпохожих #relatedtitle
     &__title {
-        font-size: 48px;
-        font-weight: 900;
+        @include m.section-title(48px, 32px);
         text-align: center;
-        text-transform: uppercase;
         margin-bottom: 50px;
-
-        @media (max-width: 768px) {
-            font-size: 32px;
-        }
     }
 
+    // #сеткапохожих #4товаравряд #relatedgrid
     &__grid {
         display: grid;
         grid-template-columns: repeat(4, 1fr);
@@ -522,211 +569,8 @@
             grid-template-columns: repeat(2, 1fr);
         }
 
-        @media (max-width: 576px) {
+        @media (max-width: v.$BreakpointSmall) {
             grid-template-columns: 1fr;
         }
     }
-}
-
-// блок подписки на рассылку
-.newsletter {
-    max-width: 1240px;
-    margin: 0 auto;
-    padding: 0 16px;
-    transform: translateY(50%);
-
-    &__container {
-        background: #000;
-        border-radius: 20px;
-        padding: 36px 64px;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        gap: 40px;
-
-        @media (max-width: 992px) {
-            flex-direction: column;
-            padding: 30px 24px;
-            gap: 24px;
-        }
-    }
-
-    &__title {
-        color: #fff;
-        font-size: 40px;
-        font-weight: 900;
-        line-height: 1.1;
-        max-width: 550px;
-        margin: 0;
-
-        @media (max-width: 768px) {
-            font-size: 28px;
-        }
-    }
-
-    &__form {
-        display: flex;
-        flex-direction: column;
-        gap: 14px;
-        width: 350px;
-
-        @media (max-width: 576px) {
-            width: 100%;
-        }
-    }
-
-    &__input-wrap {
-        background: #fff;
-        border-radius: 62px;
-        display: flex;
-        align-items: center;
-        padding: 12px 18px;
-        gap: 12px;
-    }
-
-    &__input {
-        border: none;
-        outline: none;
-        width: 100%;
-        font-size: 16px;
-    }
-
-    &__submit-btn {
-        background: #fff;
-        color: #000;
-        border: none;
-        border-radius: 62px;
-        padding: 14px 20px;
-        font-size: 16px;
-        font-weight: 500;
-        cursor: pointer;
-        transition: opacity 0.2s ease;
-
-        &:hover {
-            opacity: 0.9;
-        }
-    }
-}
-
-// футер
-.footer {
-    background: #f0f0f0;
-    padding-top: 140px;
-    padding-bottom: 50px;
-
-    &__inner {
-        max-width: 1240px;
-        margin: 0 auto;
-        padding: 0 16px;
-        display: flex;
-        justify-content: space-between;
-        gap: 60px;
-        margin-bottom: 50px;
-
-        @media (max-width: 992px) {
-            flex-direction: column;
-            gap: 30px;
-        }
-    }
-
-    &__brand-col {
-        max-width: 250px;
-    }
-
-    &__desc {
-        color: rgba(0, 0, 0, 0.6);
-        font-size: 14px;
-        line-height: 1.5;
-        margin: 20px 0 30px;
-    }
-
-    &__socials {
-        display: flex;
-        gap: 12px;
-
-        a {
-            width: 28px;
-            height: 28px;
-            border-radius: 50%;
-            background: #fff;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            border: 1px solid rgba(0, 0, 0, 0.1);
-        }
-    }
-
-    &__links-grid {
-        display: grid;
-        grid-template-columns: repeat(4, 1fr);
-        gap: 60px;
-        flex: 1;
-
-        @media (max-width: 768px) {
-            grid-template-columns: repeat(2, 1fr);
-            gap: 30px;
-        }
-    }
-
-    &__title {
-        font-size: 16px;
-        font-weight: 500;
-        letter-spacing: 3px;
-        margin: 0 0 20px 0;
-    }
-
-    &__list {
-        list-style: none;
-        padding: 0;
-        margin: 0;
-
-        li {
-            margin-bottom: 12px;
-        }
-
-        a {
-            color: rgba(0, 0, 0, 0.6);
-            text-decoration: none;
-            font-size: 14px;
-
-            &:hover {
-                color: #000;
-            }
-        }
-    }
-
-    &__bottom {
-        max-width: 1240px;
-        margin: 0 auto;
-        padding: 20px 16px 0;
-        border-top: 1px solid rgba(0, 0, 0, 0.1);
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-
-        @media (max-width: 576px) {
-            flex-direction: column;
-            gap: 14px;
-            text-align: center;
-        }
-    }
-
-    &__copyright {
-        font-size: 14px;
-        color: rgba(0, 0, 0, 0.6);
-        margin: 0;
-    }
-
-    &__payments {
-        display: flex;
-    }
-}
-
-.pay-badge {
-    background: #fff;
-    padding: 6px 12px;
-    border-radius: 6px;
-    font-size: 12px;
-    font-weight: 700;
-    border: 1px solid rgba(0, 0, 0, 0.08);
 }

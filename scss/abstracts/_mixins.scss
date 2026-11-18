@@ -1,5 +1,104 @@
-// Подключение переменных и миксинов
+@use './variables' as v;
 
-@use '../abstracts/variables' as v;
+// #флексцентр #центр #выравнивание #flexcenter #посередине
+// выравнивает дочерние элементы ровно по центру по вертикали и горизонтали
+@mixin flex-center($gap: 0) {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  @if $gap != 0 {
+    gap: $gap;
+  }
+}
 
-// Настройка миксинов
+// #флекскрая #покраям #шапкастроки #flexbetween #растянуть
+// расталкивает элементы по левому и правому краю с выравниванием по центру высоты
+@mixin flex-between($gap: 0) {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  @if $gap != 0 {
+    gap: $gap;
+  }
+}
+
+// #контейнер #центровка #ограничитель #ширинасайта #container
+// задает стандартную ширину 1240px и боковые отступы 16px
+@mixin container {
+  width: 100%;
+  max-width: v.$ContainerWidth;
+  margin: 0 auto;
+  padding: 0 16px;
+}
+
+// #чернаякнопка #кнопкакапсула #главнаякнопка #кнопкакупить #btn #button
+// стандартная черная овальная кнопка с плавным наведением и блокировкой disabled
+@mixin btn-pill-dark($height: 52px, $font-size: 16px) {
+  @include flex-center(12px);
+  height: $height;
+  padding: 0 24px;
+  border-radius: v.$RadiusPill;
+  background-color: v.$BlockBlack;
+  color: v.$TextWhite;
+  font-family: v.$Font-Main;
+  font-size: $font-size;
+  font-weight: 500;
+  cursor: pointer;
+  transition: opacity 0.2s ease;
+
+  &:hover:not(:disabled) {
+    opacity: 0.85;
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}
+
+// #белаякнопка #кнопкасрамкой #прозрачнаякнопка #показатьвсе #outlinebtn
+// кнопка с тонкой рамкой которая инвертируется в черную при наведении
+@mixin btn-pill-outline($height: 52px) {
+  @include flex-center;
+  height: $height;
+  padding: 0 36px;
+  border-radius: v.$RadiusPill;
+  border: 1px solid v.$BorderLight;
+  background-color: transparent;
+  color: v.$TextBlack;
+  font-family: v.$Font-Main;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+
+  &:hover {
+    background-color: v.$BlockBlack;
+    color: v.$TextWhite;
+    border-color: v.$BlockBlack;
+  }
+}
+
+// #заголовоксекции #крупныйзаголовок #title #h1 #h2 #шрифтзаголовка
+// оформляет заголовок секции акцидентным шрифтом Integral CF с уменьшением на мобилке
+@mixin section-title($size: 48px, $mobile-size: 32px) {
+  font-family: v.$Font-Display;
+  font-size: $size;
+  font-weight: 700;
+  line-height: 1.15;
+  text-transform: uppercase;
+  color: v.$TextBlack;
+
+  @media (max-width: v.$BreakpointMobile) {
+    font-size: $mobile-size;
+  }
+}
+
+// #коробочка #бокс #контейнер #рамкаблок #карточкаблок #box #cardbox
+// белая плашка со скруглением и тонкой серой рамкой (для корзины фильтров отзывов и форм)
+@mixin bordered-box($padding: 24px, $radius: v.$RadiusCard) {
+  background-color: v.$BaseBackground;
+  border: 1px solid v.$BorderLight;
+  border-radius: $radius;
+  padding: $padding;
+}

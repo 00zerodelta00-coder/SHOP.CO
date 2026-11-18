@@ -1,28 +1,23 @@
-// Подключение переменных и миксинов
-
+// подключение переменных и миксинов
 @use '../abstracts/variables' as v;
 @use '../abstracts/mixins' as m;
 
-// Настройка кнопок и элементов управления
-
+// #пагинация #переключениестраниц #страницы #pagination #листалка #навигациястраниц
+// нижний блок переключения страниц в каталоге (Previous 1 2 3 ... Next)
 .pagination {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+  @include m.flex-between;
   width: 100%;
   height: 40px;
   margin-bottom: 80px;
 
+  // #стрелкапагинации #кнопкавперед #кнопкатуда #previous #next #стрелка
   &__arrow {
+    @include m.flex-center(8px);
     width: 110px;
     height: 36px;
-    border: 1px solid rgba(0, 0, 0, 0.1);
-    border-radius: 8px;
+    border: 1px solid v.$BorderLight;
+    border-radius: v.$RadiusSmall;
     background: transparent;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
     font-size: 14px;
     font-weight: 500;
     cursor: pointer;
@@ -38,6 +33,7 @@
     }
   }
 
+  // #номерастраниц #списокстраниц #цифрыпагинации #numbers
   &__numbers {
     display: flex;
     align-items: center;
@@ -48,15 +44,14 @@
     }
   }
 
+  // #кнопкастраницы #номерстраницы #цифра #активнаястраница #num
   &__num {
+    @include m.flex-center;
     width: 40px;
     height: 40px;
-    border-radius: 8px;
+    border-radius: v.$RadiusSmall;
     background: transparent;
     border: none;
-    display: flex;
-    align-items: center;
-    justify-content: center;
     font-size: 14px;
     font-weight: 500;
     color: rgba(0, 0, 0, 0.5);
@@ -68,12 +63,11 @@
     }
   }
 
+  // #многоточие #точкипагинации #dots
   &__dots {
+    @include m.flex-center;
     width: 40px;
     height: 40px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
     font-size: 14px;
     color: rgba(0, 0, 0, 0.5);
   }

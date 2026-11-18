@@ -1,77 +1,70 @@
-// Подключение переменных и миксинов
-
+// подключение переменных и миксинов
 @use '../abstracts/variables' as v;
 @use '../abstracts/mixins' as m;
 
-// Настройка подвала сайта
-
+// #рассылка #подписка #черныйбаннер #newsletter #emailрассылка #формаподписки
+// черный прямоугольный блок подписки на новости который наполовину заходит на футер
 .newsletter {
-  width: 100%; // растягиваем на всю доступную ширину
-  max-width: 1240px; // но не шире 1240px из макета
-  margin: 0 auto; // центрируем плашку
-  padding: 36px 64px; // внутренние отступы из Figma
+  @include m.container;
+  @include m.flex-between(40px);
+  padding: 36px 64px;
   background-color: v.$BlockBlack;
-  border-radius: 20px;
-
-  display: flex;
-  align-items: center;
-  justify-content: space-between; // расталкивает заголовок влево, а форму вправо
-  gap: 40px;
-
-  box-sizing: border-box; // чтобы padding не ломал ширину 1240px
+  border-radius: v.$RadiusCard;
   transform: translateY(50%);
   position: relative;
   z-index: 10;
 
-  @media (max-width: 768px) {
+  @media (max-width: v.$BreakpointMobile) {
     flex-direction: column;
     padding: 28px 24px;
     transform: translateY(20%);
     gap: 24px;
   }
 
+  // #заголовокрассылки #текстбаннера #newslettertitle
   &__title {
-    font-family: 'Integral CF', sans-serif;
+    font-family: v.$Font-Display;
     font-size: 40px;
     line-height: 45px;
     font-weight: 700;
     color: v.$TextWhite;
     max-width: 551px;
     width: 100%;
-    margin: 0; // убираем дефолтные отступы h2
-    flex-shrink: 0; // запрещаем flexbox сдавливать ширину текста
+    margin: 0;
+    flex-shrink: 0;
 
-    @media (max-width: 768px) {
+    @media (max-width: v.$BreakpointMobile) {
       font-size: 28px;
       line-height: 34px;
       text-align: center;
     }
   }
 
+  // #формарассылки #праваячастьбаннера #newsletterform
   &__form {
     display: flex;
     flex-direction: column;
     gap: 14px;
-    width: 349px; // точная ширина формы из макета
-    flex-shrink: 0; // запрещаем форме менять ширину
-    margin-left: auto; // ГАРАНТИЯ: железно выталкивает форму к правому краю
+    width: 349px;
+    flex-shrink: 0;
+    margin-left: auto;
 
-    @media (max-width: 768px) {
+    @media (max-width: v.$BreakpointMobile) {
       width: 100%;
       margin-left: 0;
     }
   }
 
+  // #полепочты #инпутрассылки #белыйинпут #emailinput
   &__input-wrap {
     width: 100%;
     height: 48px;
     background-color: v.$BaseBackground;
-    border-radius: 62px;
+    border-radius: v.$RadiusPill;
     padding: 12px 16px;
     display: flex;
     align-items: center;
     gap: 12px;
-    box-sizing: border-box;
 
     img {
       width: 24px;
@@ -88,42 +81,52 @@
     }
   }
 
+  // #кнопкаподписки #белаякнопка #subscribebtn
   &__submit {
+    @include m.flex-center;
     width: 100%;
     height: 46px;
-    border-radius: 62px;
+    border-radius: v.$RadiusPill;
     border: none;
     background-color: v.$BaseBackground;
     color: v.$TextBlack;
     font-size: 16px;
     font-weight: 500;
     cursor: pointer;
-    box-sizing: border-box;
+    transition: opacity 0.2s ease;
+
+    &:hover {
+      opacity: 0.9;
+    }
   }
 }
 
+// #подвал #футер #footer #низсайта #контакты #оплата
+// серый подвал сайта с логотипом колонками ссылок и платежными системами
 .footer {
   width: 100%;
   background-color: v.$DarknessBaseBackground;
   padding: 140px 100px 80px;
 
-  @media (max-width: 1024px) {
+  @media (max-width: v.$BreakpointTablet) {
     padding: 140px 24px 60px;
   }
 
+  // #сеткафутера #колонкифутера #footermain
   &__main {
-    max-width: 1240px;
+    max-width: v.$ContainerWidth;
     margin: 0 auto;
     display: flex;
     justify-content: space-between;
     gap: 40px;
 
-    @media (max-width: 1024px) {
+    @media (max-width: v.$BreakpointTablet) {
       flex-wrap: wrap;
       gap: 32px;
     }
   }
 
+  // #брендфутер #описаниемагазина #колонкалоготипа #footerbrand
   &__brand {
     width: 248px;
     display: flex;
@@ -144,20 +147,20 @@
     }
   }
 
+  // #соцсети #иконкисоцсетей #socials #твиттер #фейсбук #инстаграм #гитхаб
   &__socials {
     display: flex;
     gap: 12px;
   }
 
+  // #кнопкасоцсети #круглаяиконка #socialbtn
   &__social-btn {
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    @include m.flex-center;
     width: 28px;
     height: 28px;
-    border-radius: 50%;
+    border-radius: v.$RadiusCircle;
     background-color: v.$BaseBackground;
-    border: 1px solid rgba(0, 0, 0, 0.2);
+    border: 1px solid v.$BorderMedium;
     text-decoration: none;
 
     img {
@@ -174,6 +177,7 @@
     }
   }
 
+  // #менюфутера #ссылкиподвала #колонкаменю #footernav
   &__nav {
     display: flex;
     flex-direction: column;
@@ -192,21 +196,22 @@
     }
   }
 
+  // #линияфутера #разделительподвала #divider
   &__divider {
     width: 100%;
-    max-width: 1240px;
+    max-width: v.$ContainerWidth;
     border: none;
+    border-top: 1px solid v.$BorderLight;
     margin: 50px auto 25px;
   }
 
+  // #нижняяполоса #копирайт #права #footerbottom
   &__bottom {
-    max-width: 1240px;
+    @include m.flex-between;
+    max-width: v.$ContainerWidth;
     margin: 0 auto;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
 
-    @media (max-width: 768px) {
+    @media (max-width: v.$BreakpointMobile) {
       flex-direction: column;
       gap: 16px;
       text-align: center;
@@ -218,14 +223,13 @@
     }
   }
 
+  // #оплата #карты #виза #мастеркард #payments #платежныесистемы
   &__payments {
     display: flex;
     align-items: center;
 
     .payment-card {
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      @include m.flex-center;
 
       img {
         width: 100%;
@@ -236,6 +240,7 @@
   }
 }
 
+// #фейсбуккнопка #чернаяиконка #facebook
 .footer__socials a.footer__social-btn--facebook {
   background-color: v.$BlackBackground;
   border-color: v.$BlackBackground;

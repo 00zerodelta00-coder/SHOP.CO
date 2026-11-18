@@ -1,20 +1,18 @@
-// Подключение переменных и миксинов
-
+// подключение переменных и миксинов
 @use '../abstracts/variables' as v;
 @use '../abstracts/mixins' as m;
 
-// Настройка карточек
-
+// #каталог #главнаячастькаталога #списоктоваров #catalogmain #колонкатоваров
+// правая колонка страницы каталога где находится шапка сетка карточек и пагинация
 .catalog-main {
   flex: 1;
   display: flex;
   flex-direction: column;
   min-width: 0;
 
+  // #шапкакаталога #заголовоккатегории #casual #catalogheader
   &__header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+    @include m.flex-between;
     margin-bottom: 16px;
 
     @media (max-width: 540px) {
@@ -29,6 +27,7 @@
     }
   }
 
+  // #счетчиктоваров #показанотоваров #метаданные #showing #сортировкаблок
   &__meta {
     display: flex;
     align-items: center;
@@ -40,6 +39,7 @@
     }
   }
 
+  // #сортировка #sortby #популярные #выборсортировки
   &__sort {
     display: flex;
     align-items: center;
@@ -64,14 +64,17 @@
     }
   }
 
+  // #разделителькаталога #линия #hr #граница
   &__divider {
     width: 100%;
     border: none;
-    border-top: 1px solid rgba(0, 0, 0, 0.1);
+    border-top: 1px solid v.$BorderLight;
     margin: 32px 0 20px;
   }
 }
 
+// #сеткатоваров #гридкарточек #колонкитоваров #productgrid #каталогсетка
+// сетка карточек 3 в ряд на десктопе 2 на планшете и 1 на телефоне
 .product-grid {
   list-style: none;
   display: grid;
@@ -79,7 +82,7 @@
   gap: 20px;
   width: 100%;
 
-  @media (max-width: 1024px) {
+  @media (max-width: v.$BreakpointTablet) {
     grid-template-columns: repeat(2, 1fr);
   }
 
@@ -87,11 +90,14 @@
     grid-template-columns: 1fr;
   }
 
+  // #элементсетки #ячейкатовара #griditem
   &__item {
     display: flex;
   }
 }
 
+// #карточкатовара #товар #картатовара #productcard #карточка #бокстовара
+// отдельная карточка товара с фото названием рейтингом и ценой
 .product-card {
   position: relative;
   width: 100%;
@@ -99,23 +105,34 @@
   flex-direction: column;
   gap: 8px;
 
+  // #фототовара #картинкакарточки #превью #подложкафото #thumb #изображение
   &__thumb {
+    @include m.flex-center;
     width: 100%;
     aspect-ratio: 295 / 298;
-    background-color: #f0eeed;
-    border-radius: 20px;
+    background-color: v.$CardThumbBackground;
+    border-radius: v.$RadiusCard;
     overflow: hidden;
-    display: flex;
-    align-items: center;
-    justify-content: center;
 
     img {
       width: 100%;
       height: 100%;
       object-fit: cover;
     }
+
+    // #кнопкавкорзину #купитьвкарточке #addcartbtn #кнопкатовара
+    &__add-btn {
+      @include m.btn-pill-dark(40px, 14px);
+      position: relative;
+      z-index: 2;
+      width: 100%;
+      margin-top: auto;
+      padding: 0 16px;
+    }
   }
 
+  // #названиетовара #заголовоккарточки #ссылкатовара #title #имятовара
+  // псевдоэлемент before растягивает кликабельную ссылку на всю площадь карточки
   &__title {
     font-size: 18px;
     font-weight: 700;
@@ -134,12 +151,14 @@
     }
   }
 
+  // #рейтинг #оценка #звездыблок #rating
   &__rating {
     display: flex;
     align-items: center;
     gap: 10px;
   }
 
+  // #звездочки #иконкизвезд #stars #желтыезвезды
   &__stars {
     display: flex;
     align-items: center;
@@ -151,11 +170,13 @@
     }
   }
 
+  // #цифрарейтинга #балл #оценкатекст #score
   &__score {
     font-size: 14px;
     color: v.$TextGray;
   }
 
+  // #блокцены #стоимостьблок #цены #pricing
   &__pricing {
     display: flex;
     align-items: center;
@@ -163,23 +184,25 @@
     margin-top: 4px;
   }
 
+  // #цена #стоимость #актуальнаяцена #стараяцена #price #oldprice
   &__price {
     font-size: 24px;
     font-weight: 700;
     color: v.$TextBlack;
 
     &--old {
-      color: rgba(0, 0, 0, 0.4);
+      color: v.$TextMuted;
       text-decoration: line-through;
     }
   }
 
+  // #скидка #бейджскидки #процентскидки #discount #badge #акция
   &__badge {
     background-color: v.$BlockRed;
     color: v.$TextRed;
     font-size: 12px;
     font-weight: 500;
-    border-radius: 62px;
+    border-radius: v.$RadiusPill;
     padding: 4px 10px;
   }
 }

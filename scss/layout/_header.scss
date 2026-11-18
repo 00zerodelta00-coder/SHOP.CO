@@ -1,10 +1,9 @@
-// Подключение переменных и миксинов
-
+// подключение переменных и миксинов
 @use '../abstracts/variables' as v;
 @use '../abstracts/mixins' as m;
 
-// Настройка шапки сайта
-
+// #авторизацияшапка #имяпользователя #кнопкавыхода #logout #аккаунт #headerauth
+// блок справа в шапке который появляется вместо иконки профиля когда пользователь вошел в аккаунт
 .header__auth {
   display: inline-flex;
   align-items: center;
@@ -12,42 +11,45 @@
   font-size: 14px;
   font-weight: 500;
 
+  // #имяюзера #логин #никнейм #username
+  // обрезает длинное имя или почту троеточием чтобы не ломать верстку шапки
   &-user {
     color: v.$TextBlack;
     max-width: 120px;
     overflow: hidden;
-    text-overflow: hidden;
+    text-overflow: ellipsis;
     white-space: nowrap;
   }
 
+  // #кнопкавыхода #выйти #logoutbtn #выход
+  // серая капсульная кнопка выхода с инверсией в черный при наведении
   &-btn {
     padding: 6px 14px;
-    border-radius: 62px;
+    border-radius: v.$RadiusPill;
     background-color: v.$DarknessBaseBackground;
     color: v.$TextBlack;
     font-size: 13px;
     font-weight: 500;
     transition: background-color 0.2s ease, color 0.2s ease;
 
-    &-hover {
+    &:hover {
       background-color: v.$BlockBlack;
       color: v.$TextWhite;
     }
   }
 }
 
-
-
+// #верхняяплашка #рекламнаястрока #чернаяполоса #скидка20 #topbar #баннерсверху
+// самая верхняя черная полоска над шапкой с предложением скидки 20%
 .top-bar {
+  @include m.flex-center;
   position: relative;
   width: 100%;
   min-height: 38px;
   background-color: v.$BlockBlack;
-  display: flex;
-  align-items: center;
-  justify-content: center;
   padding: 0 40px;
 
+  // #текстплашки #акция #ссылкарегистрации
   &__text {
     font-size: 14px;
     color: v.$TextWhite;
@@ -61,7 +63,9 @@
     }
   }
 
+  // #крестик #закрытьплашку #closebtn #кнопказакрытия
   &__close {
+    @include m.flex-center;
     position: absolute;
     right: 20px;
     top: 50%;
@@ -71,9 +75,6 @@
     background: transparent;
     border: none;
     cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
 
     img {
       width: 13px;
@@ -83,24 +84,23 @@
   }
 }
 
+// #шапка #хедер #header #навигация #верхнееменю
+// основной контейнер шапки сайта
 .header {
   width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
 
+  // #внутренняяшапка #контейнершапки #headerinner
   &__inner {
-    width: 100%;
-    max-width: 1240px;
+    @include m.container;
+    @include m.flex-between(24px);
     min-height: 48px;
-    margin: 24px auto 0;
-    padding: 0 16px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 24px;
+    margin-top: 24px;
   }
 
+  // #логотип #лого #shopco #logo
   &__logo {
     width: 160px;
     height: 22px;
@@ -115,12 +115,13 @@
     }
   }
 
+  // #меню #ссылкишапки #навигация #nav
   &__nav {
     display: flex;
     align-items: center;
     gap: 24px;
 
-    @media (max-width: 768px) {
+    @media (max-width: v.$BreakpointMobile) {
       display: none;
     }
 
@@ -140,20 +141,19 @@
     }
   }
 
-
-
+  // #поиск #строкапоиска #инпутпоиска #search #лупа
   &__search {
     flex: 1;
     max-width: 577px;
     height: 48px;
     background-color: v.$DarknessBaseBackground;
-    border-radius: 62px;
+    border-radius: v.$RadiusPill;
     padding: 12px 16px;
     display: flex;
     align-items: center;
     gap: 12px;
 
-    @media (max-width: 768px) {
+    @media (max-width: v.$BreakpointMobile) {
       display: none;
     }
 
@@ -173,6 +173,7 @@
     }
   }
 
+  // #иконкишапки #корзинаиконка #профильиконка #действия #actions
   &__actions {
     display: flex;
     align-items: center;
@@ -185,11 +186,12 @@
     }
   }
 
+  // #разделительшапки #линия #hr #границашапки
   &__divider {
     width: 100%;
-    max-width: 1240px;
+    max-width: v.$ContainerWidth;
     border: none;
-    border-top: 1px solid rgba(0, 0, 0, 0.1);
+    border-top: 1px solid v.$BorderLight;
     margin: 24px auto 0;
   }
 }

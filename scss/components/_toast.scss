@@ -1,5 +1,9 @@
+// подключение переменных и миксинов
 @use '../abstracts/variables' as v;
+@use '../abstracts/mixins' as m;
 
+// #уведомления #тосты #всплывашки #toastcontainer #оповещения #контейнертостов
+// фиксированный контейнер в правом нижнем углу экрана куда складываются все уведомления
 .toast-container {
   position: fixed;
   right: 24px;
@@ -12,7 +16,7 @@
   width: calc(100% - 32px);
   pointer-events: none;
 
-  @media (max-width: 576px) {
+  @media (max-width: v.$BreakpointSmall) {
     right: 16px;
     left: 16px;
     bottom: 16px;
@@ -21,17 +25,16 @@
   }
 }
 
+// #тост #плашкауведомления #сообщение #toast #карточкауведомления #попап
+// отдельная всплывающая плашка с анимацией появления и цветной полоской слева
 .toast {
+  @include m.flex-between(12px);
   pointer-events: auto;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
   padding: 14px 18px;
   border-radius: 16px;
   background-color: v.$BlockBlack;
   color: v.$TextWhite;
-  font-family: 'Satoshi-Variable', sans-serif;
+  font-family: v.$Font-Main;
   font-size: 14px;
   line-height: 1.4;
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.18);
@@ -40,46 +43,52 @@
   transform: translateY(16px);
   transition: opacity 0.25s ease, transform 0.25s ease;
 
+  // #появлениетоста #видимыйтост #visible
   &--visible {
     opacity: 1;
     transform: translateY(0);
   }
 
+  // #скрытиетоста #исчезновение #hiding
   &--hiding {
     opacity: 0;
     transform: translateY(10px);
   }
 
+  // #успех #зеленыйтост #success
   &--success {
-    border-left-color: #01ab31;
+    border-left-color: v.$SuccessGreen;
   }
 
+  // #ошибка #красныйтост #error
   &--error {
     background-color: #2b0b0b;
     border-left-color: v.$TextRed;
   }
 
+  // #предупреждение #желтыйтост #warning
   &--warning {
-    border-left-color: #ffc633;
+    border-left-color: v.$StarYellow;
   }
 
+  // #информация #синийтост #info
   &--info {
     border-left-color: #06caf5;
   }
 
+  // #тексттоста #сообщениевнутри #message
   &__message {
     flex: 1;
     word-break: break-word;
   }
 
+  // #крестиктоста #закрытьуведомление #close
   &__close {
+    @include m.flex-center;
     flex-shrink: 0;
     width: 24px;
     height: 24px;
-    border-radius: 50%;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
+    border-radius: v.$RadiusCircle;
     color: rgba(255, 255, 255, 0.7);
     font-size: 18px;
     line-height: 1;

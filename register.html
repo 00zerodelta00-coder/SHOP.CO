@@ -11,6 +11,8 @@
 
 <body>
 
+    <!-- #верхняяплашка #акция #баннерсверху #скидка20 #topbar -->
+    <!-- самая верхняя черная полоска с предложением скидки и кнопкой закрытия -->
     <div class="top-bar">
         <p class="top-bar__text">
             Sign up and get 20% off to your first order.
@@ -21,26 +23,32 @@
         </button>
     </div>
 
+    <!-- #шапка #хедер #меню #поиск #навигация #header -->
+    <!-- главная шапка сайта с логотипом меню строкой поиска и иконками корзины и профиля -->
     <header class="header">
         <div class="header__inner">
+            <!-- #логотип #logo -->
             <div class="header__logo">
                 <a href="index.html">
                     <img src="./assest/icons/SHOP.CO.svg" alt="SHOP.CO">
                 </a>
             </div>
 
+            <!-- #навигация #ссылкишапки #nav -->
             <nav class="header__nav">
-                <a href="Category.html">Shop <img src="./assest/icons/CornerDown.svg" alt="arrow-down"></a>
+                <a href="Category.html">Shop <img src="./assest/icons/CornerDown.svg" alt="arrow down"></a>
                 <a href="#">On Sale</a>
                 <a href="#">New Arrivals</a>
                 <a href="#">Brands</a>
             </nav>
 
+            <!-- #поиск #строкапоиска #search -->
             <form action="/search" method="get" class="header__search">
-                <img src="./assest/icons/Loop.svg" alt="search-icon">
+                <img src="./assest/icons/Loop.svg" alt="search">
                 <input type="search" placeholder="Search for products...">
             </form>
 
+            <!-- #иконкишапки #корзина #профиль #actions -->
             <div class="header__actions">
                 <a href="Cart.html" aria-label="cart">
                     <img src="./assest/icons/Cart.svg" alt="cart">
@@ -54,20 +62,25 @@
     </header>
 
     <main>
+        <!-- #хлебныекрошки #навигацияпуть #крошки #breadcrumbs -->
         <nav class="breadcrumbs" aria-label="breadcrumbs">
             <a href="index.html">Home</a>
             <img src="./assest/icons/CornerRight.svg" alt="arrow">
             <span class="breadcrumbs__current">Sign Up</span>
         </nav>
 
+        <!-- #регистрация #созданиеаккаунта #формарегистрации #authsection #registerForm -->
+        <!-- карточка регистрации нового пользователя обрабатывается в js/auth.js -->
         <section class="auth-section">
             <div class="auth-card">
                 <h1 class="auth-card__title">CREATE ACCOUNT</h1>
                 <p class="auth-card__subtitle">Sign up and get 20% off your first order</p>
 
                 <form class="auth-form" id="registerForm" novalidate>
+                    <!-- #ошибкасервера #registerServerError -->
                     <div class="auth-form__server-error" id="registerServerError"></div>
 
+                    <!-- #полеимени #nameField -->
                     <div class="auth-field" id="nameField">
                         <label class="auth-field__label" for="registerName">Name</label>
                         <input class="auth-field__input" type="text" id="registerName" name="name"
@@ -75,6 +88,7 @@
                         <span class="auth-field__error" id="registerNameError"></span>
                     </div>
 
+                    <!-- #полепочты #emailField -->
                     <div class="auth-field" id="emailField">
                         <label class="auth-field__label" for="registerEmail">Email</label>
                         <input class="auth-field__input" type="email" id="registerEmail" name="email"
@@ -82,6 +96,7 @@
                         <span class="auth-field__error" id="registerEmailError"></span>
                     </div>
 
+                    <!-- #полепароля #passwordField -->
                     <div class="auth-field" id="passwordField">
                         <label class="auth-field__label" for="registerPassword">Password</label>
                         <input class="auth-field__input" type="password" id="registerPassword" name="password"
@@ -89,6 +104,7 @@
                         <span class="auth-field__error" id="registerPasswordError"></span>
                     </div>
 
+                    <!-- #повторпароля #confirmPasswordField -->
                     <div class="auth-field" id="confirmPasswordField">
                         <label class="auth-field__label" for="registerConfirmPassword">Confirm Password</label>
                         <input class="auth-field__input" type="password" id="registerConfirmPassword"
@@ -96,11 +112,13 @@
                         <span class="auth-field__error" id="registerConfirmPasswordError"></span>
                     </div>
 
+                    <!-- #кнопкарегистрации #registerSubmitBtn -->
                     <button type="submit" class="auth-form__submit" id="registerSubmitBtn">
                         Sign Up
                     </button>
                 </form>
 
+                <!-- #ссылкавхода #authfooter -->
                 <p class="auth-card__footer">
                     Already have an account?
                     <a href="login.html">Sign In</a>
@@ -109,9 +127,10 @@
         </section>
     </main>
 
+    <!-- #рассылка #подписка #черныйбаннер #newsletter -->
     <section class="newsletter">
-        <h2 class="newsletter__title">STAY UPTO DATE ABOUT OUR LATEST OFFERS</h2>
-        <form class="newsletter__form">
+        <h2 class="newsletter__title">STAY UPTO DATE ABOUT<br>OUR LATEST OFFERS</h2>
+        <form class="newsletter__form" action="#" method="post">
             <div class="newsletter__input-wrap">
                 <img src="./assest/icons/Mail.svg" alt="mail">
                 <input type="email" placeholder="Enter your email address" required>
@@ -120,6 +139,7 @@
         </form>
     </section>
 
+    <!-- #подвал #футер #контакты #оплата #footer -->
     <footer class="footer">
         <div class="footer__main">
             <div class="footer__brand">
@@ -185,6 +205,8 @@
             </div>
         </div>
     </footer>
+
+    <!-- #скрипты #модули #scripts -->
     <script type="module" src="./js/auth.js"></script>
 </body>
 

@@ -1,48 +1,44 @@
+// подключение переменных и миксинов
 @use '../abstracts/variables' as v;
+@use '../abstracts/mixins' as m;
 
+// #авторизация #регистрация #вход #секцияформы #authsection #страницавхода
+// центрирует карточку входа или регистрации по середине страницы
 .auth-section {
-  max-width: 1240px;
+  @include m.container;
   margin: 40px auto 80px;
-  padding: 0 16px;
   display: flex;
   justify-content: center;
 }
 
+// #карточкавхода #боксовхода #формабокс #authcard #окновхода #контейнерформы
+// белая скругленная карточка с рамкой для форм login и register
 .auth-card {
+  @include m.bordered-box(40px 36px, v.$RadiusCard);
   width: 100%;
   max-width: 500px;
-  border: 1px solid rgba(0, 0, 0, 0.1);
-  border-radius: 20px;
-  padding: 40px 36px;
-  background-color: v.$BaseBackground;
 
-  @media (max-width: 576px) {
+  @media (max-width: v.$BreakpointSmall) {
     padding: 28px 20px;
   }
 
+  // #заголовокформы #welcomeback #createaccount #authtitle
   &__title {
-    font-family: 'Integral CF', sans-serif;
-    font-size: 32px;
-    line-height: 1.15;
-    font-weight: 700;
-    text-transform: uppercase;
+    @include m.section-title(32px, 26px);
     text-align: center;
-    color: v.$TextBlack;
     margin-bottom: 10px;
-
-    @media (max-width: 576px) {
-      font-size: 26px;
-    }
   }
 
+  // #подзаголовокформы #описаниеформы #authsubtitle
   &__subtitle {
-    font-family: 'Satoshi-Variable', sans-serif;
+    font-family: v.$Font-Main;
     font-size: 16px;
     color: v.$TextGray;
     text-align: center;
     margin-bottom: 28px;
   }
 
+  // #подвалформы #переключениевходрегистрация #ссылканарегистрацию #authfooter
   &__footer {
     margin-top: 24px;
     text-align: center;
@@ -62,11 +58,14 @@
   }
 }
 
+// #форма #поляформы #authform #отправкаформы
 .auth-form {
   display: flex;
   flex-direction: column;
   gap: 18px;
 
+  // #сервернаяошибка #общаяошибка #краснаяплашка #servererror #неверныйпароль
+  // скрытая по умолчанию плашка над полями которая появляется если сервер вернул ошибку
   &__server-error {
     display: none;
     background-color: v.$BlockRed;
@@ -82,55 +81,44 @@
     }
   }
 
+  // #кнопкаотправки #кнопкавойти #кнопкарегистрации #signin #signup #submit
   &__submit {
+    @include m.btn-pill-dark(52px, 16px);
     width: 100%;
-    height: 52px;
     margin-top: 6px;
-    background-color: v.$BlockBlack;
-    color: v.$TextWhite;
-    border-radius: 62px;
-    font-family: 'Satoshi-Variable', sans-serif;
-    font-size: 16px;
-    font-weight: 500;
-    transition: opacity 0.2s ease;
-
-    &:hover:not(:disabled) {
-      opacity: 0.85;
-    }
-
-    &:disabled {
-      opacity: 0.5;
-      cursor: not-allowed;
-    }
   }
 }
 
+// #полеформы #группаполя #инпутблок #authfield #полеввода
+// обертка для одного поля формы: подпись сам инпут и текст ошибки валидации снизу
 .auth-field {
   display: flex;
   flex-direction: column;
   gap: 6px;
 
+  // #подписьполя #лейбл #label
   &__label {
-    font-family: 'Satoshi-Variable', sans-serif;
+    font-family: v.$Font-Main;
     font-size: 14px;
     font-weight: 500;
     color: v.$TextBlack;
   }
 
+  // #инпут #текстовоеполе #email #password #name #input
   &__input {
     width: 100%;
     height: 48px;
     padding: 12px 20px;
-    border-radius: 62px;
+    border-radius: v.$RadiusPill;
     background-color: v.$DarknessBaseBackground;
     border: 1.5px solid transparent;
-    font-family: 'Satoshi-Variable', sans-serif;
+    font-family: v.$Font-Main;
     font-size: 16px;
     color: v.$TextBlack;
     transition: border-color 0.2s ease, background-color 0.2s ease;
 
     &::placeholder {
-      color: rgba(0, 0, 0, 0.4);
+      color: v.$TextMuted;
     }
 
     &:focus {
@@ -139,6 +127,7 @@
     }
   }
 
+  // #текстошибки #подсказкаошибки #валидация #error
   &__error {
     font-size: 13px;
     color: v.$TextRed;
@@ -146,6 +135,7 @@
     padding-left: 16px;
   }
 
+  // #состояниеошибки #краснаярамка #fielderror
   &--error {
     .auth-field__input {
       border-color: v.$TextRed;

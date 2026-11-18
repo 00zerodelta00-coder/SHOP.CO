@@ -1,32 +1,34 @@
+// подключение переменных и миксинов
 @use '../abstracts/variables' as v;
 @use '../abstracts/mixins' as m;
 
-// главный баннер с двумя людьми и статистикой
+// #главныйбаннер #первыйэкран #герой #hero #шапкаглавной #промоблок
+// верхняя секция главной страницы с крупным заголовком цифрами статистики и фото моделей
 .hero {
-  background-color: #f2f0f1;
+  background-color: v.$HeroBackground;
   position: relative;
   overflow: hidden;
   min-height: 663px;
 
-  @media (max-width: 1024px) {
+  @media (max-width: v.$BreakpointTablet) {
     min-height: auto;
     overflow: visible;
   }
 
+  // #контейнербаннера #herocontainer
   &__container {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+    @include m.flex-between;
     min-height: 663px;
     position: relative;
 
-    @media (max-width: 1024px) {
+    @media (max-width: v.$BreakpointTablet) {
       flex-direction: column;
       padding-top: 40px;
       min-height: auto;
     }
   }
 
+  // #леваячастьбаннера #текстбаннера #herocontent
   &__content {
     width: 596px;
     max-width: 100%;
@@ -34,15 +36,16 @@
     padding: 70px 0 116px;
     z-index: 2;
 
-    @media (max-width: 1024px) {
+    @media (max-width: v.$BreakpointTablet) {
       width: 100%;
       padding: 0 0 32px;
       text-align: left;
     }
   }
 
+  // #главныйзаголовок #h1 #findclothes #herotitle
   &__title {
-    font-family: 'Integral CF', sans-serif;
+    font-family: v.$Font-Display;
     font-size: 64px;
     line-height: 64px;
     font-weight: 700;
@@ -54,104 +57,99 @@
       line-height: 52px;
     }
 
-    @media (max-width: 768px) {
+    @media (max-width: v.$BreakpointMobile) {
       font-size: 36px;
       line-height: 34px;
       margin-bottom: 20px;
     }
   }
 
+  // #описаниебаннера #подзаголовок #herodesc
   &__desc {
-    font-family: 'Satoshi-Variable', sans-serif;
+    font-family: v.$Font-Main;
     font-size: 16px;
     line-height: 22px;
     color: v.$TextGray;
     margin: 0 0 32px;
     max-width: 545px;
 
-    @media (max-width: 768px) {
+    @media (max-width: v.$BreakpointMobile) {
       font-size: 14px;
       line-height: 20px;
       margin-bottom: 24px;
     }
   }
 
+  // #кнопкакупить #shopnow #главнаякнопка #herobtn
   &__btn {
+    @include m.btn-pill-dark(52px, 16px);
     display: inline-flex;
-    align-items: center;
-    justify-content: center;
     width: 210px;
-    height: 52px;
-    background-color: v.$BlockBlack;
-    color: v.$TextWhite;
-    border-radius: 62px;
-    font-family: 'Satoshi-Variable', sans-serif;
-    font-size: 16px;
-    font-weight: 500;
     text-decoration: none;
     margin-bottom: 48px;
-    transition: opacity 0.2s ease;
 
-    &:hover {
-      opacity: 0.85;
-    }
-
-    @media (max-width: 768px) {
+    @media (max-width: v.$BreakpointMobile) {
       width: 100%;
       margin-bottom: 32px;
     }
   }
 
+  // #статистика #цифры #счетчики #200+ #2000+ #30000+ #herostats
   &__stats {
     display: flex;
     align-items: center;
     gap: 32px;
 
-    @media (max-width: 768px) {
+    @media (max-width: v.$BreakpointMobile) {
       flex-wrap: wrap;
       justify-content: center;
       gap: 16px 32px;
     }
   }
 
+  // #пунктстатистики #statitem
   &__stat-item {
     display: flex;
     flex-direction: column;
   }
 
+  // #числостатистики #крупнаяцифра #statnum
   &__stat-num {
-    font-family: 'Satoshi-Variable', sans-serif;
+    font-family: v.$Font-Main;
     font-size: 40px;
     line-height: 44px;
     font-weight: 700;
     color: v.$TextBlack;
 
-    @media (max-width: 768px) {
+    @media (max-width: v.$BreakpointMobile) {
       font-size: 24px;
       line-height: 28px;
     }
   }
 
+  // #подписьстатистики #statlabel
   &__stat-label {
-    font-family: 'Satoshi-Variable', sans-serif;
+    font-family: v.$Font-Main;
     font-size: 16px;
     color: v.$TextGray;
 
-    @media (max-width: 768px) {
+    @media (max-width: v.$BreakpointMobile) {
       font-size: 12px;
     }
   }
 
+  // #разделительцифр #вертикальнаялиния #statdivider
   &__stat-divider {
     width: 1px;
     height: 74px;
-    background-color: rgba(0, 0, 0, 0.1);
+    background-color: v.$BorderLight;
 
-    @media (max-width: 768px) {
+    @media (max-width: v.$BreakpointMobile) {
       height: 48px;
     }
   }
 
+  // #праваячастьбаннера #медиаблок #heromedia
   &__media {
     position: absolute;
     right: 0;
@@ -164,7 +162,7 @@
       width: 520px;
     }
 
-    @media (max-width: 1024px) {
+    @media (max-width: v.$BreakpointTablet) {
       position: relative;
       width: 100%;
       height: auto;
@@ -172,6 +170,7 @@
     }
   }
 
+  // #фотомоделей #картинкагероя #heroimg
   &__img {
     position: absolute;
     bottom: 0;
@@ -181,7 +180,7 @@
     object-fit: cover;
     object-position: top right;
 
-    @media (max-width: 1024px) {
+    @media (max-width: v.$BreakpointTablet) {
       position: static;
       height: auto;
       max-width: 480px;
@@ -190,6 +189,7 @@
     }
   }
 
+  // #декоративныезвезды #чернаязвезда #блеск #herostar
   &__star {
     position: absolute;
     pointer-events: none;
@@ -201,7 +201,7 @@
       top: 50px;
       right: 20px;
 
-      @media (max-width: 768px) {
+      @media (max-width: v.$BreakpointMobile) {
         width: 76px;
         height: 76px;
         top: 15px;
@@ -215,7 +215,7 @@
       top: 44%;
       left: 15px;
 
-      @media (max-width: 768px) {
+      @media (max-width: v.$BreakpointMobile) {
         width: 44px;
         height: 44px;
         top: 30%;
@@ -225,58 +225,58 @@
   }
 }
 
-// черная полоса с логотипами брендов
+// #бренды #логотипыбрендов #чернаяполоса #brands #versace #zara #gucci #prada
+// черная полоса с белыми логотипами известных брендов сразу под главным баннером
 .brands {
   background-color: v.$BlockBlack;
   padding: 44px 0;
   position: relative;
   z-index: 4;
 
+  // #контейнербрендов #brandscontainer
   &__container {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+    @include m.flex-between(32px);
     flex-wrap: wrap;
-    gap: 32px;
 
-    @media (max-width: 768px) {
+    @media (max-width: v.$BreakpointMobile) {
       justify-content: center;
       gap: 24px 34px;
     }
   }
 
+  // #логотипбренда #brandslogo
   &__logo {
     height: 34px;
     width: auto;
     object-fit: contain;
 
-    @media (max-width: 768px) {
+    @media (max-width: v.$BreakpointMobile) {
       height: 24px;
     }
   }
 }
 
-// секции новинок и хитов продаж
+// #секциитоваров #новинки #хитыпродаж #newarrivals #topselling #productssection
+// секции с 4 карточками в ряд и кнопкой View All на главной странице
 .products-section {
   padding: 72px 0 64px;
 
+  // #заголовокподборки #sectiontitle
   &__title {
-    font-family: 'Integral CF', sans-serif;
-    font-size: 48px;
+    @include m.section-title(48px, 32px);
     text-align: center;
-    color: v.$TextBlack;
     margin-bottom: 55px;
 
-    @media (max-width: 768px) {
-      font-size: 32px;
+    @media (max-width: v.$BreakpointMobile) {
       margin-bottom: 32px;
     }
   }
 
+  // #сетка4колонки #карточкинаглавной
   .product-grid {
     grid-template-columns: repeat(4, 1fr);
 
-    @media (max-width: 1024px) {
+    @media (max-width: v.$BreakpointTablet) {
       grid-template-columns: repeat(2, 1fr);
     }
 
@@ -285,96 +285,86 @@
     }
   }
 
+  // #оберткакнопки #btnwrap
   &__btn-wrap {
-    display: flex;
-    justify-content: center;
+    @include m.flex-center;
     margin-top: 36px;
   }
 
+  // #показатьвсе #кнопкаviewall #viewall
   &__view-all {
+    @include m.btn-pill-outline(52px);
     display: inline-flex;
-    align-items: center;
-    justify-content: center;
     width: 218px;
-    height: 52px;
-    border-radius: 62px;
-    border: 1px solid rgba(0, 0, 0, 0.1);
-    color: v.$TextBlack;
-    font-family: 'Satoshi-Variable', sans-serif;
-    font-size: 16px;
-    font-weight: 500;
     text-decoration: none;
-    transition: all 0.2s ease;
 
-    &:hover {
-      background-color: v.$BlockBlack;
-      color: v.$TextWhite;
-    }
-
-    @media (max-width: 768px) {
+    @media (max-width: v.$BreakpointMobile) {
       width: 100%;
     }
   }
 }
 
+// #разделительсекций #линия #hr #sectiondivider
 .section-divider {
   width: 100%;
-  max-width: 1240px;
+  max-width: v.$ContainerWidth;
   margin: 0 auto;
   border: none;
-  border-top: 1px solid rgba(0, 0, 0, 0.1);
+  border-top: 1px solid v.$BorderLight;
 }
 
-// серый блок выбора по стилю одежды
+// #стильодежды #выборпостилю #dressstyle #casual #formal #party #gym #бентосетка
+// серый скругленный бокс с карточками стилей одежды (Casual Formal Party Gym)
 .dress-style {
   padding: 80px 0;
 
+  // #серыйбокс #коробкастилей #карточкастилей #dressstylecard
   &__card {
     background-color: v.$DarknessBaseBackground;
-    border-radius: 40px;
+    border-radius: v.$RadiusBanner;
     padding: 70px 64px 76px;
 
-    @media (max-width: 768px) {
+    @media (max-width: v.$BreakpointMobile) {
       padding: 40px 24px 28px;
-      border-radius: 20px;
+      border-radius: v.$RadiusCard;
     }
   }
 
+  // #заголовокстилей #dressstyletitle
   &__title {
-    font-family: 'Integral CF', sans-serif;
-    font-size: 48px;
+    @include m.section-title(48px, 32px);
     text-align: center;
-    color: v.$TextBlack;
     margin-bottom: 64px;
 
-    @media (max-width: 768px) {
-      font-size: 32px;
+    @media (max-width: v.$BreakpointMobile) {
       margin-bottom: 28px;
     }
   }
 
+  // #сеткастилей #12колонок #dressstylegrid
   &__grid {
     display: grid;
     grid-template-columns: repeat(12, 1fr);
     gap: 20px;
 
-    @media (max-width: 768px) {
+    @media (max-width: v.$BreakpointMobile) {
       display: flex;
       flex-direction: column;
       gap: 16px;
     }
   }
 
+  // #карточкастиля #плиткастиля #dressstyleitem
   &__item {
     position: relative;
     height: 289px;
-    border-radius: 20px;
+    border-radius: v.$RadiusCard;
     overflow: hidden;
-    background-color: #ffffff;
+    background-color: v.$BaseBackground;
     text-decoration: none;
     display: block;
 
-    @media (max-width: 768px) {
+    @media (max-width: v.$BreakpointMobile) {
       height: 190px;
     }
 
@@ -387,7 +377,7 @@
       transition: transform 0.3s ease;
     }
 
-    // 1. casual
+    // #стильcasual #повседневный
     &--casual,
     &:nth-child(1) {
       grid-column: span 5;
@@ -399,7 +389,7 @@
       }
     }
 
-    // 2. formal
+    // #стильformal #деловой #официальный
     &--formal,
     &:nth-child(2) {
       grid-column: span 7;
@@ -411,7 +401,7 @@
       }
     }
 
-    // 3. party
+    // #стильparty #вечеринка #праздничный
     &--party,
     &:nth-child(3) {
       grid-column: span 7;
@@ -423,7 +413,7 @@
       }
     }
 
-    // 4. gym
+    // #стильgym #спорт #зал
     &--gym,
     &:nth-child(4) {
       grid-column: span 5;
@@ -436,18 +426,19 @@
     }
   }
 
+  // #названиестиля #подписьплитки #dressstylename
   &__name {
     position: absolute;
     top: 25px;
     left: 36px;
-    font-family: 'Satoshi-Variable', sans-serif;
+    font-family: v.$Font-Main;
     font-size: 36px;
     font-weight: 700;
     color: v.$TextBlack;
     z-index: 2;
     pointer-events: none;
 
-    @media (max-width: 768px) {
+    @media (max-width: v.$BreakpointMobile) {
       font-size: 24px;
       top: 16px;
       left: 24px;
@@ -455,32 +446,29 @@
   }
 }
 
-// блок с отзывами покупателей
+// #отзывы #счастливыепокупатели #reviews #карусельотзывов #комментарии
+// блок с отзывами покупателей и стрелками прокрутки внизу главной страницы
 .reviews {
   padding: 40px 0 80px;
 
+  // #шапкаотзывов #reviewsheader
   &__header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+    @include m.flex-between;
     margin-bottom: 40px;
   }
 
+  // #заголовокотзывов #reviewstitle
   &__title {
-    font-family: 'Integral CF', sans-serif;
-    font-size: 48px;
-    color: v.$TextBlack;
-
-    @media (max-width: 768px) {
-      font-size: 32px;
-    }
+    @include m.section-title(48px, 32px);
   }
 
+  // #стрелкиотзывов #кнопкипрокрутки #reviewsarrows
   &__arrows {
     display: flex;
     gap: 16px;
   }
 
+  // #стрелка #кнопкастрелка #reviewsarrow
   &__arrow {
     background: transparent;
     border: none;
@@ -493,29 +481,31 @@
     }
   }
 
+  // #списокотзывов #сеткаотзывов #reviewslist
   &__list {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 20px;
 
-    @media (max-width: 1024px) {
+    @media (max-width: v.$BreakpointTablet) {
       grid-template-columns: repeat(2, 1fr);
     }
 
-    @media (max-width: 768px) {
+    @media (max-width: v.$BreakpointMobile) {
       grid-template-columns: 1fr;
     }
   }
 }
 
+// #карточкаотзыва #отзыв #боксротызва #reviewcard #комментарийпокупателя
+// отдельная карточка отзыва со звездами именем галочкой и текстом
 .review-card {
-  border: 1px solid rgba(0, 0, 0, 0.1);
-  border-radius: 20px;
-  padding: 28px 32px;
+  @include m.bordered-box(28px 32px, v.$RadiusCard);
   display: flex;
   flex-direction: column;
   gap: 12px;
 
+  // #звездыотзыва #рейтинготзыва #reviewstars
   &__stars {
     display: flex;
     gap: 6px;
@@ -526,26 +516,30 @@
     }
   }
 
+  // #автор #имяпокупателя #reviewuser
   &__user {
     display: flex;
     align-items: center;
     gap: 6px;
   }
 
+  // #имяавтора #reviewname
   &__name {
-    font-family: 'Satoshi-Variable', sans-serif;
+    font-family: v.$Font-Main;
     font-size: 20px;
     font-weight: 700;
     color: v.$TextBlack;
   }
 
+  // #зеленаягалочка #проверенныйпокупатель #verified
   &__verified {
     width: 19px;
     height: 19px;
   }
 
+  // #текстотзыва #цитата #reviewtext
   &__text {
-    font-family: 'Satoshi-Variable', sans-serif;
+    font-family: v.$Font-Main;
     font-size: 16px;
     line-height: 22px;
     color: v.$TextGray;

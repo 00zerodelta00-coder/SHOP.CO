@@ -1,19 +1,17 @@
-// Подключение переменных и миксинов
-
+// подключение переменных и миксинов
 @use '../abstracts/variables' as v;
 @use '../abstracts/mixins' as m;
 
-// Настройка хлебных крошек
-
+// #хлебныекрошки #навигацияпуть #крошки #breadcrumbs #путьстраницы
+// строка навигации под шапкой (Home > Shop > Casual)
 .breadcrumbs {
-  width: 100%;
-  max-width: 1240px;
+  @include m.container;
   margin: 24px auto;
-  padding: 0 16px;
   display: flex;
   align-items: center;
   gap: 12px;
 
+  // #ссылкакрошек #пунктпути #сераяссылка
   a,
   span {
     font-size: 16px;
@@ -21,11 +19,13 @@
     text-decoration: none;
   }
 
+  // #текущаястраница #активнаякрошка #черныйпункт #current
   &__current {
     color: v.$TextBlack !important;
     font-weight: 500;
   }
 
+  // #стрелкакрошек #разделительпути #иконкастрелки
   img {
     width: 16px;
     height: 16px;

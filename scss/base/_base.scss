@@ -1,10 +1,9 @@
-// Подключение переменных и миксинов
-
+// подключение переменных и миксинов
 @use '../abstracts/variables' as v;
 @use '../abstracts/mixins' as m;
 
-// Настройка базовых стилей
-
+// #телосайта #body #фонстраницы #основнойтекст #основнойшрифт #сглаживание
+// задает белый фон черный текст и главный шрифт для всей страницы
 body {
   background-color: v.$BaseBackground;
   color: v.$TextBlack;
@@ -13,9 +12,8 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
+// #контейнер #ограничитель #сетка #центровка #бокс #container #ширина
+// центрирует контент по ширине 1240px с боковыми отступами 16px через миксин
 .container {
-  width: 100%;
-  max-width: 1240px;
-  margin: 0 auto;
-  padding: 0 16px;
+  @include m.container;
 }

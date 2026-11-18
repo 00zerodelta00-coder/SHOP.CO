@@ -1,31 +1,41 @@
+// импортируем показ уведомлений запросы к товарам и добавление в корзину
 import { showToast } from './toast.js';
 import { getProducts, getProductById, IMAGE_BASE_URL } from './api.js';
 import { handleAddToCart } from './cart.js';
 
+// сколько карточек показывать на одной странице каталога
 const ITEMS_PER_PAGE = 9;
+// обязательные поля которые мы ждем в объекте товара от бэкенда
 const REQUIRED_FIELDS = ['id', 'name', 'price', 'rating', 'image'];
+// список поддерживаемых css модификаторов для кнопок цвета
+const SUPPORTED_COLORS = ['green', 'red', 'yellow', 'orange', 'cyan', 'blue', 'purple', 'pink', 'white', 'black'];
+// текущая открытая страница в каталоге
 let currentPage = 1;
 
+// картинка заглушка в формате svg если фото товара не загрузилось
 const PLACEHOLDER_SVG =
     'data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%22295%22%20height%3D%22298%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22%23F0EEED%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20dominant-baseline%3D%22middle%22%20text-anchor%3D%22middle%22%20fill%3D%22%23888888%22%20font-family%3D%22sans-serif%22%20font-size%3D%2216%22%3ENo%20Image%3C%2Ftext%3E%3C%2Fsvg%3E';
 
-// Проверка структуры данных от бэкенда
+// проверяем что сервер прислал все нужные поля у товара и предупреждаем в консоль если чего то не хватает
 function validateProduct(product, index) {
+    // filter оставляет только те названия полей которых нет в объекте product
     const missingFields = REQUIRED_FIELDS.filter(
         field => product[field] === undefined || product[field] === null
     );
 
     if (missingFields.length > 0) {
         console.warn(
-            `[API Schema Warning] Товар #${index} (id: ${product.id ?? 'нет'}) — отсутствуют поля: [${missingFields.join(', ')}]`,
+            `товар #${index} (id: ${product.id ?? 'нет'}) отсутствуют поля: [${missingFields.join(', ')}]`,
             product
         );
     }
 }
 
-// Генерация SVG-звезд
+// собирает html разметку звезд рейтинга по числу (например 4.5 превратится в 4 полные и 1 половинку)
 function renderStars(rating = 0) {
+    // Math.floor отбрасывает дробную часть чтобы узнать количество целых звезд
     const fullStars = Math.floor(rating);
+    // проверяем остаток от деления на 1 если он больше или равен 0.5 добавляем половину звезды
     const hasHalf = rating % 1 >= 0.5;
     let starsHtml = '';
 
@@ -43,30 +53,35 @@ function renderStars(rating = 0) {
     return starsHtml;
 }
 
-// Обработка 404 для отсутствующих фото (10–24)
+// записываем обработчик ошибки загрузки картинки в window чтобы вызывать его прямо из атрибута onerror в html
 window.handleImageError = function (imgElement, productId, productName, requestedSrc) {
+    // обнуляем onerror чтобы браузер не ушел в бесконечный цикл если заглушка тоже не откроется
     imgElement.onerror = null;
-    console.warn(`[Asset 404] Нет фото для товара #${productId} ("${productName}"): ${requestedSrc}`);
+    console.warn(`нет фото для товара #${productId} (${productName}): ${requestedSrc}`);
     imgElement.src = PLACEHOLDER_SVG;
-    imgElement.alt = `Нет изображения (${productName})`;
+    imgElement.alt = `нет изображения (${productName})`;
 };
 
+// собирает полный путь до картинки товара на сервере
 function getProductImageUrl(imageField) {
     if (!imageField) return PLACEHOLDER_SVG;
+    // если в имени файла с бэкенда уже есть точка (например 1.png) оставляем как есть иначе дописываем .png
     const imageName = imageField.includes('.') ? imageField : `${imageField}.png`;
     return `${IMAGE_BASE_URL}/${imageName}`;
 }
 
-// Шаблон карточки товара (с кнопкой Add to Cart)
+// собирает html разметку одной карточки товара для главной страницы каталога и похожих товаров
 function createProductCard(product, index) {
     validateProduct(product, index);
 
     const imageSrc = getProductImageUrl(product.image);
+    // Boolean проверяет есть ли у товара одновременно и процент скидки и старая цена
     const hasDiscount = Boolean(product.discount && product.oldPrice);
-    const safeName = (product.name || 'Товар').replace(/'/g, "\\'");
-
-    const defaultSize = Array.isArray(product.sizes) && product.sizes.length > 0 ? product.sizes[0] : 'Large';
-    const defaultColor = Array.isArray(product.colors) && product.colors.length > 0 ? product.colors[0] : 'black';
+    // экранируем одинарные кавычки в названии чтобы не сломать атрибут onerror в разметке
+    const safeName = (product.name || 'товар').replace(/'/g, "\\'");
+    // берем первый доступный размер и цвет для быстрого добавления из карточки
+    const defaultSize = Array.isArray(product.sizes) && product.sizes.length ? product.sizes[0] : 'Large';
+    const defaultColor = Array.isArray(product.colors) && product.colors.length ? product.colors[0] : 'black';
 
     return `
         <li class="product-grid__item" data-id="${product.id}">
@@ -74,12 +89,12 @@ function createProductCard(product, index) {
                 <div class="product-card__thumb">
                     <img 
                         src="${imageSrc}" 
-                        alt="${product.alt || product.name || 'Товар'}"
+                        alt="${product.alt || product.name || 'товар'}"
                         onerror="window.handleImageError(this, ${product.id}, '${safeName}', '${imageSrc}')"
                     >
                 </div>
                 <h3 class="product-card__title">
-                    <a href="Product.html?id=${product.id}">${product.name || 'Без названия'}</a>
+                    <a href="Product.html?id=${product.id}">${product.name || 'без названия'}</a>
                 </h3>
                 <div class="product-card__rating">
                     <div class="product-card__stars">
@@ -94,57 +109,69 @@ function createProductCard(product, index) {
                         <span class="product-card__badge">-${product.discount}%</span>
                     ` : ''}
                 </div>
+                <button 
+                    type="button" 
+                    class="product-card__add-btn" 
+                    data-action="add-to-cart"
+                    data-product-id="${product.id}"
+                    data-size="${defaultSize}"
+                    data-color="${defaultColor}"
+                >
+                    Add to Cart
+                </button>
             </article>
         </li>
     `;
 }
 
-// Делегированный клик по кнопке "Add to Cart" на любой карточке товара
-function initCardAddToCartEvents() {
+// делегирование клика по кнопке добавления в корзину внутри любой карточки товара
+function initCardCartEvents() {
     document.addEventListener('click', async (e) => {
-        const addBtn = e.target.closest('[data-add-cart-id]');
-        if (!addBtn || addBtn.disabled) return;
-
-        e.preventDefault();
-        e.stopPropagation();
+        const addBtn = e.target.closest('[data-action="add-to-cart"]');
+        if (!addBtn) return;
 
         await handleAddToCart({
-            productId: addBtn.dataset.addCartId,
-            size: addBtn.dataset.defaultSize,
-            color: addBtn.dataset.defaultColor,
+            productId: Number(addBtn.dataset.productId),
+            size: addBtn.dataset.size,
+            color: addBtn.dataset.color,
             quantity: 1,
             button: addBtn,
         });
     });
 }
 
-// --- ЛОГИКА ГЛАВНОЙ СТРАНИЦЫ (index.html) ---
+// --- логика главной страницы (index.html) ---
+
+// загружает подборку товаров (новинки или хиты продаж) в нужный контейнер на главной
 async function loadHomeSection(containerId, params) {
     const container = document.getElementById(containerId);
+    // если такого блока на текущей странице нет просто выходим
     if (!container) return;
 
     try {
-        container.innerHTML = '<li class="loading">Загрузка товаров...</li>';
+        container.innerHTML = '<li class="loading">загрузка товаров...</li>';
         const response = await getProducts(params);
         const products = response.items || [];
 
         if (products.length === 0) {
-            container.innerHTML = '<li class="empty">Товары не найдены</li>';
+            container.innerHTML = '<li class="empty">товары не найдены</li>';
             return;
         }
+        // превращаем массив товаров в массив html строк и склеиваем в одну строку через join
         container.innerHTML = products.map((p, idx) => createProductCard(p, idx)).join('');
     } catch (error) {
-        console.error(`[API error] Ошибка загрузки блока #${containerId}:`, error);
-        container.innerHTML = '<li class="error">Не удалось загрузить подборку товаров</li>';
-        if (typeof window.showToast === 'function') {
-            window.showToast('Ошибка загрузки товаров с сервера', 'error');
-        }
+        console.error(`ошибка загрузки блока #${containerId}:`, error);
+        container.innerHTML = '<li class="error">не удалось загрузить подборку товаров</li>';
+        showToast('ошибка загрузки товаров с сервера', 'error');
     }
 }
 
-// --- ЛОГИКА КАТАЛОГА (Category.html) ---
+// --- логика каталога (Category.html) ---
+
+// формирует массив номеров страниц для пагинации с многоточием если страниц больше 7
 function getPageNumbers(current, total) {
     if (total <= 7) {
+        // Array.from создает массив чисел от 1 до total
         return Array.from({ length: total }, (_, i) => i + 1);
     }
     if (current <= 3 || current >= total - 2) {
@@ -153,6 +180,7 @@ function getPageNumbers(current, total) {
     return [1, '...', current - 1, current, current + 1, '...', total];
 }
 
+// отрисовывает кнопки страниц внизу каталога и блокирует стрелки на первой и последней странице
 function renderPagination(page, totalPages) {
     const paginationNav = document.querySelector('.pagination');
     if (!paginationNav) return;
@@ -182,6 +210,7 @@ function renderPagination(page, totalPages) {
     }
 }
 
+// обновляет текст счетчика показанных товаров (например Showing 1-9 of 24 Products)
 function updateCatalogMeta(page, limit, total, itemsCount) {
     const metaText = document.querySelector('.catalog-main__meta p');
     if (!metaText) return;
@@ -196,22 +225,24 @@ function updateCatalogMeta(page, limit, total, itemsCount) {
     metaText.textContent = `Showing ${start}-${end} of ${total} Products`;
 }
 
+// загружает нужную страницу товаров в каталоге
 async function loadCatalogPage(page = 1) {
     const productsContainer = document.getElementById('productsContainer');
     if (!productsContainer) return;
 
     try {
-        productsContainer.innerHTML = '<li class="loading">Загрузка каталога...</li>';
+        productsContainer.innerHTML = '<li class="loading">загрузка каталога...</li>';
 
         const response = await getProducts({ page, limit: ITEMS_PER_PAGE });
         const products = response.items || [];
         const total = response.total ?? products.length;
+        // Math.ceil округляет вверх чтобы даже для 1 лишнего товара создалась новая страница
         const totalPages = response.pages ?? Math.ceil(total / ITEMS_PER_PAGE);
 
         currentPage = response.page || page;
 
         if (products.length === 0) {
-            productsContainer.innerHTML = '<li class="empty">Товары не найдены</li>';
+            productsContainer.innerHTML = '<li class="empty">товары не найдены</li>';
             updateCatalogMeta(1, ITEMS_PER_PAGE, 0, 0);
             renderPagination(1, 0);
             return;
@@ -221,14 +252,13 @@ async function loadCatalogPage(page = 1) {
         updateCatalogMeta(currentPage, ITEMS_PER_PAGE, total, products.length);
         renderPagination(currentPage, totalPages);
     } catch (error) {
-        console.error('[API Fetch Error] Ошибка загрузки каталога:', error);
-        productsContainer.innerHTML = '<li class="error">Не удалось загрузить товары с сервера.</li>';
-        if (typeof window.showToast === 'function') {
-            window.showToast('Не удалось загрузить каталог товаров', 'error');
-        }
+        console.error('ошибка загрузки каталога:', error);
+        productsContainer.innerHTML = '<li class="error">не удалось загрузить товары с сервера</li>';
+        showToast('не удалось загрузить каталог товаров', 'error');
     }
 }
 
+// вешает клики на стрелки и номера страниц пагинации через делегирование событий
 function initPaginationEvents() {
     const paginationNav = document.querySelector('.pagination');
     if (!paginationNav) return;
@@ -240,6 +270,7 @@ function initPaginationEvents() {
 
         if (prevBtn && !prevBtn.disabled) {
             loadCatalogPage(currentPage - 1);
+            // плавно прокручиваем страницу в самый верх при смене страницы каталога
             window.scrollTo({ top: 0, behavior: 'smooth' });
         } else if (nextBtn && !nextBtn.disabled) {
             loadCatalogPage(currentPage + 1);
@@ -254,27 +285,36 @@ function initPaginationEvents() {
     });
 }
 
-// --- ДЕТАЛЬНАЯ СТРАНИЦА ТОВАРА (Product.html?id=...) ---
-const COLOR_HEX_MAP = {
-    green: '#00C12B',
-    red: '#F50606',
-    yellow: '#F5DD06',
-    orange: '#F57906',
-    cyan: '#06CAF5',
-    blue: '#063AF5',
-    purple: '#7D06F5',
-    pink: '#F506A4',
-    white: '#FFFFFF',
-    black: '#000000',
-};
+// --- детальная страница товара (Product.html?id=...) ---
 
+// переключение активной миниатюры в галерее товара
+function initGalleryThumbs(mainImageEl) {
+    const thumbBtns = document.querySelectorAll('.product-view__thumb-btn');
+    if (!thumbBtns.length || !mainImageEl) return;
+
+    thumbBtns.forEach((btn) => {
+        btn.addEventListener('click', () => {
+            thumbBtns.forEach((b) => b.classList.remove('product-view__thumb-btn--active'));
+            btn.classList.add('product-view__thumb-btn--active');
+            const thumbImg = btn.querySelector('img');
+            if (thumbImg && thumbImg.src) {
+                mainImageEl.src = thumbImg.src;
+            }
+        });
+    });
+}
+
+// загружает один товар по id из адресной строки и настраивает выбор цвета размера и добавление в корзину
 async function initProductDetailPage() {
     const titleEl = document.getElementById('productTitle');
-    if (!titleEl) return; // Мы не на странице Product.html
+    // если заголовка товара нет значит мы не на странице Product.html
+    if (!titleEl) return;
 
+    // достаем параметр id из адресной строки браузера (например из Product.html?id=5)
     const params = new URLSearchParams(window.location.search);
     const productId = Number(params.get('id')) || 1;
 
+    // переменные для хранения текущего выбора пользователя
     let selectedColor = '';
     let selectedSize = '';
     let quantity = 1;
@@ -299,15 +339,20 @@ async function initProductDetailPage() {
     const btnPlus = document.getElementById('btnPlus');
     const btnAddToCart = document.getElementById('btnAddToCart');
 
+    initGalleryThumbs(mainImageEl);
+
     try {
+        // запрашиваем данные конкретного товара с бэкенда
         const product = await getProductById(productId);
         const imageSrc = getProductImageUrl(product.image);
         const safeName = (product.name || 'Product').replace(/'/g, "\\'");
 
+        // подставляем название товара во вкладку браузера хлебные крошки и заголовок
         document.title = `SHOP.CO - ${product.name}`;
         if (breadcrumbEl) breadcrumbEl.textContent = product.category || product.name;
         titleEl.textContent = product.name;
 
+        // обновляем главное фото и миниатюры слева
         if (mainImageEl) {
             mainImageEl.src = imageSrc;
             mainImageEl.alt = product.alt || product.name;
@@ -321,10 +366,12 @@ async function initProductDetailPage() {
             thumb.onerror = () => window.handleImageError(thumb, product.id, safeName, imageSrc);
         });
 
+        // заполняем звезды рейтинг цену и описание
         if (starsEl) starsEl.innerHTML = renderStars(product.rating || 0);
         if (ratingValEl) ratingValEl.innerHTML = `${product.rating ?? 0}/<span class="product-view__score-max">5</span>`;
         if (priceEl) priceEl.textContent = `$${product.price}`;
 
+        // если у товара есть скидка показываем старую цену и бейдж иначе скрываем их
         if (product.oldPrice && product.discount) {
             if (oldPriceEl) {
                 oldPriceEl.style.display = '';
@@ -341,21 +388,21 @@ async function initProductDetailPage() {
 
         if (descEl) descEl.textContent = product.description || '';
 
-        // Отрисовка доступных цветов из бэкенда
+        // отрисовываем доступные цвета товара через БЭМ модификаторы без инлайн стилей
         const colors = Array.isArray(product.colors) && product.colors.length ? product.colors : ['black'];
         selectedColor = colors[0];
         if (colorPickerEl) {
             colorPickerEl.innerHTML = colors.map((color, idx) => {
-                const bg = COLOR_HEX_MAP[color.toLowerCase()] || color;
-                const isWhite = color.toLowerCase() === 'white';
-                const borderStyle = isWhite ? 'border: 1px solid rgba(0,0,0,0.2);' : '';
-                const checkStroke = isWhite ? 'black' : 'white';
+                const normalized = color.toLowerCase();
+                const colorModifier = SUPPORTED_COLORS.includes(normalized)
+                    ? `color-btn--${normalized}`
+                    : 'color-btn--black';
+                const checkStroke = normalized === 'white' ? 'black' : 'white';
                 return `
                     <button 
                         type="button" 
-                        class="color-btn ${idx === 0 ? 'color-btn--active' : ''}" 
+                        class="color-btn ${colorModifier} ${idx === 0 ? 'color-btn--active' : ''}" 
                         data-color="${color}" 
-                        style="background-color: ${bg}; ${borderStyle}" 
                         aria-label="${color}"
                         title="${color}"
                     >
@@ -364,6 +411,7 @@ async function initProductDetailPage() {
                 `;
             }).join('');
 
+            // переключение активного цвета по клику
             colorPickerEl.addEventListener('click', (e) => {
                 const btn = e.target.closest('.color-btn');
                 if (!btn) return;
@@ -378,7 +426,7 @@ async function initProductDetailPage() {
             });
         }
 
-        // Отрисовка доступных размеров из бэкенда
+        // отрисовываем доступные размеры товара и выбираем первый по умолчанию
         const sizes = Array.isArray(product.sizes) && product.sizes.length ? product.sizes : ['Large'];
         selectedSize = sizes[0];
         if (sizePickerEl) {
@@ -386,6 +434,7 @@ async function initProductDetailPage() {
                 <button type="button" class="size-btn ${idx === 0 ? 'size-btn--active' : ''}" data-size="${size}">${size}</button>
             `).join('');
 
+            // переключение активного размера по клику
             sizePickerEl.addEventListener('click', (e) => {
                 const btn = e.target.closest('.size-btn');
                 if (!btn) return;
@@ -395,7 +444,7 @@ async function initProductDetailPage() {
             });
         }
 
-        // Счётчик количества
+        // кнопки уменьшения и увеличения количества перед добавлением в корзину
         if (btnMinus && quantityValEl) {
             btnMinus.addEventListener('click', () => {
                 if (quantity > 1) {
@@ -413,7 +462,7 @@ async function initProductDetailPage() {
             });
         }
 
-        // Добавление в корзину со страницы товара
+        // отправка выбранного товара размера цвета и количества в корзину
         if (btnAddToCart) {
             btnAddToCart.addEventListener('click', async () => {
                 await handleAddToCart({
@@ -426,7 +475,7 @@ async function initProductDetailPage() {
             });
         }
 
-        // Подгружаем блок похожих товаров (You Might Also Like)
+        // подгружаем похожие товары из той же категории в нижний блок
         const relatedGrid = document.getElementById('relatedProductsGrid');
         if (relatedGrid) {
             const relatedRes = await getProducts({ category: product.category, limit: 4 });
@@ -436,16 +485,15 @@ async function initProductDetailPage() {
             }
         }
     } catch (error) {
-        console.error('[Product Detail Error]:', error);
+        console.error('ошибка загрузки страницы товара:', error);
         titleEl.textContent = 'Product not found';
-        if (typeof window.showToast === 'function') {
-            window.showToast('Не удалось загрузить информацию о товаре', 'error');
-        }
+        showToast('не удалось загрузить информацию о товаре', 'error');
     }
 }
 
+// общая точка запуска всех функций для товаров на страницах
 function initApp() {
-    initCardAddToCartEvents();
+    initCardCartEvents();
     initPaginationEvents();
     loadCatalogPage(1);
     initProductDetailPage();
@@ -459,5 +507,3 @@ if (document.readyState === 'loading') {
 } else {
     initApp();
 }
-
-

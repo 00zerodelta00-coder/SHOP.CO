@@ -1,3 +1,4 @@
+// импортируем функцию показа уведомлений и все методы для работы с корзиной на сервере
 import { showToast } from './toast.js';
 import {
     getCart,
@@ -9,39 +10,38 @@ import {
     TOKEN_KEY,
 } from './api.js';
 
+// картинка заглушка в формате svg на случай если у товара нет фото на сервере
 const PLACEHOLDER_SVG =
     'data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%22124%22%20height%3D%22124%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22%23F0EEED%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20dominant-baseline%3D%22middle%22%20text-anchor%3D%22middle%22%20fill%3D%22%23888888%22%20font-family%3D%22sans-serif%22%20font-size%3D%2212%22%3ENo%20Image%3C%2Ftext%3E%3C%2Fsvg%3E';
 
+// проверяем авторизован ли пользователь по наличию токена в localStorage
 function isAuthenticated() {
+    // Boolean() превращает найденную строку токена в true а пустоту (null) в false
     return Boolean(localStorage.getItem(TOKEN_KEY));
 }
 
-// Универсальное уведомление (использует showToast, если модуль подключён, или console)
-function notify(message, type = 'info') {
-    if (typeof window.showToast === 'function') {
-        window.showToast(message, type);
-    } else {
-        console.log(`[Toast ${type.toUpperCase()}]: ${message}`);
-    }
-}
-
-// --- CREATE: Добавление товара в корзину с любой страницы ---
+// export делает функцию добавления в корзину доступной для вызова со страницы товара Product.html
 export async function handleAddToCart({ productId, size, color, quantity = 1, button = null }) {
+    // без токена сервер не даст добавить товар поэтому сразу просим войти и кидаем на login.html
     if (!isAuthenticated()) {
-        notify('Войдите в аккаунт, чтобы добавлять товары в корзину', 'warning');
+        showToast('войдите в аккаунт чтобы добавлять товары в корзину', 'warning');
         setTimeout(() => {
             window.location.href = 'login.html';
         }, 1200);
         return null;
     }
 
+    // запоминаем исходный текст кнопки чтобы вернуть его обратно после запроса
     const originalText = button ? button.textContent : '';
+
     try {
         if (button) {
+            // блокируем кнопку на время запроса чтобы не отправить товар дважды при двойном клике
             button.disabled = true;
             button.textContent = 'Adding...';
         }
 
+        // отправляем post запрос на добавление товара и ждем обновленную корзину от сервера
         const updatedCart = await addToCartApi({
             productId: Number(productId),
             size,
@@ -49,17 +49,19 @@ export async function handleAddToCart({ productId, size, color, quantity = 1, bu
             quantity: Number(quantity),
         });
 
-        notify('Товар добавлен в корзину', 'success');
+        showToast('товар добавлен в корзину', 'success');
         return updatedCart;
     } catch (error) {
+        // если сервер вернул 401 значит токен протух удаляем его и просим перезайти
         if (error.message.includes('401') || error.message.toLowerCase().includes('token')) {
             localStorage.removeItem(TOKEN_KEY);
-            notify('Сессия истекла. Войдите снова', 'error');
+            showToast('сессия истекла войдите снова', 'error');
         } else {
-            notify(error.message || 'Не удалось добавить товар в корзину', 'error');
+            showToast(error.message || 'не удалось добавить товар в корзину', 'error');
         }
         return null;
     } finally {
+        // блок finally сработает даже при ошибке и разблокирует кнопку
         if (button) {
             button.disabled = false;
             button.textContent = originalText;
@@ -67,19 +69,20 @@ export async function handleAddToCart({ productId, size, color, quantity = 1, bu
     }
 }
 
-// --- READ / UPDATE / DELETE: Логика страницы Cart.html ---
+// отрисовывает заглушку когда корзина пустая или пользователь не вошел в аккаунт
 function renderEmptyOrGuestState(container, titleText, subtitleText, actionHref, actionLabel) {
     container.innerHTML = `
-        <div class="cart-empty" style="text-align: center; padding: 48px 20px;">
-            <h3 style="font-size: 22px; font-weight: 700; margin-bottom: 10px;">${titleText}</h3>
-            <p style="color: rgba(0,0,0,0.6); margin-bottom: 24px;">${subtitleText}</p>
-            <a href="${actionHref}" class="order-summary__checkout-btn" style="display: inline-flex; width: auto; padding: 14px 36px; margin-top: 0;">
+        <div class="cart-empty">
+            <h3 class="cart-empty__title">${titleText}</h3>
+            <p class="cart-empty__text">${subtitleText}</p>
+            <a href="${actionHref}" class="order-summary__checkout-btn cart-empty__btn">
                 ${actionLabel}
             </a>
         </div>
     `;
 }
 
+// обновляет правый блок Order Summary (подытог скидка доставка и итоговая сумма)
 function updateOrderSummary(cart) {
     const subtotalEl = document.getElementById('summarySubtotal');
     const discountEl = document.getElementById('summaryDiscount');
@@ -87,6 +90,7 @@ function updateOrderSummary(cart) {
     const totalEl = document.getElementById('summaryTotal');
     const checkoutBtn = document.getElementById('checkoutBtn');
 
+    // оператор ?? берет значение справа (0) только если слева пришло null или undefined
     const subtotal = cart?.subtotal ?? 0;
     const discount = cart?.discount ?? 0;
     const deliveryFee = cart?.deliveryFee ?? 0;
@@ -97,11 +101,14 @@ function updateOrderSummary(cart) {
     if (discountEl) discountEl.textContent = discount > 0 ? `-$${discount}` : '$0';
     if (deliveryEl) deliveryEl.textContent = `$${deliveryFee}`;
     if (totalEl) totalEl.textContent = `$${total}`;
+    // если товаров в корзине нет кнопку оформления заказа делаем неактивной
     if (checkoutBtn) checkoutBtn.disabled = !hasItems;
 }
 
+// собирает html разметку одной карточки товара в корзине
 function renderCartItem(item) {
     const product = item.product || {};
+    // если у картинки в базе нет расширения файла дописываем .png
     const imageName = product.image
         ? (product.image.includes('.') ? product.image : `${product.image}.png`)
         : '';
@@ -148,6 +155,7 @@ function renderCartItem(item) {
     `;
 }
 
+// отрисовывает весь список товаров в корзине и обновляет итоговые суммы
 function renderCart(cart) {
     const container = document.getElementById('cartItemsContainer');
     if (!container) return;
@@ -166,15 +174,18 @@ function renderCart(cart) {
         return;
     }
 
+    // map превращает каждый объект товара в строку html а join склеивает их через разделительную линию hr
     container.innerHTML = items
         .map((item) => renderCartItem(item))
         .join('<hr class="cart-items__divider">');
 }
 
+// запрашивает корзину с сервера при открытии страницы Cart.html
 async function loadCartPage() {
     const container = document.getElementById('cartItemsContainer');
     if (!container) return;
 
+    // если пользователь гость не делаем лишний запрос на сервер а сразу предлагаем войти
     if (!isAuthenticated()) {
         updateOrderSummary(null);
         renderEmptyOrGuestState(
@@ -188,7 +199,7 @@ async function loadCartPage() {
     }
 
     try {
-        container.innerHTML = '<p style="padding: 24px; text-align: center;">Loading cart...</p>';
+        container.innerHTML = '<p class="cart-items__status">Loading cart...</p>';
         const cart = await getCart();
         renderCart(cart);
     } catch (error) {
@@ -203,21 +214,24 @@ async function loadCartPage() {
                 'Sign In'
             );
         } else {
-            container.innerHTML = `<p style="padding: 24px; text-align: center; color: #FF3333;">Не удалось загрузить корзину: ${error.message}</p>`;
-            notify('Ошибка загрузки корзины', 'error');
+            container.innerHTML = `<p class="cart-items__status cart-items__status--error">не удалось загрузить корзину: ${error.message}</p>`;
+            showToast('ошибка загрузки корзины', 'error');
         }
     }
 }
 
+// вешает обработчики кликов на кнопки + - удаление и оформление заказа
 function initCartEvents() {
     const container = document.getElementById('cartItemsContainer');
     if (!container) return;
 
-    // Делегирование событий для кнопок +, - и удаления
+    // делегирование событий вешаем один обработчик на весь контейнер вместо каждой отдельной кнопки
     container.addEventListener('click', async (e) => {
+        // closest ищет ближайшую родительскую кнопку с атрибутом data-action
         const actionBtn = e.target.closest('[data-action]');
         if (!actionBtn || actionBtn.disabled) return;
 
+        // находим саму карточку товара чтобы достать ее id из data-cart-item-id
         const itemEl = actionBtn.closest('.cart-item');
         if (!itemEl) return;
 
@@ -225,7 +239,7 @@ function initCartEvents() {
         const action = actionBtn.dataset.action;
         const currentQty = Number(itemEl.querySelector('.quantity-control__value')?.textContent || 1);
 
-        // Блокируем все кнопки внутри карточки на время запроса
+        // блокируем все кнопки внутри этой строки на время запроса к серверу
         const rowButtons = itemEl.querySelectorAll('button');
         rowButtons.forEach((btn) => (btn.disabled = true));
 
@@ -234,35 +248,37 @@ function initCartEvents() {
 
             if (action === 'increase') {
                 if (currentQty >= 99) {
-                    notify('Максимальное количество — 99 шт.', 'warning');
+                    showToast('максимальное количество 99 шт', 'warning');
+                    rowButtons.forEach((btn) => (btn.disabled = false));
                     return;
                 }
                 updatedCart = await updateCartItemApi(itemId, currentQty + 1);
-                notify('Количество обновлено', 'success');
+                showToast('количество обновлено', 'success');
             } else if (action === 'decrease') {
                 if (currentQty <= 1) return;
                 updatedCart = await updateCartItemApi(itemId, currentQty - 1);
-                notify('Количество обновлено', 'success');
+                showToast('количество обновлено', 'success');
             } else if (action === 'delete') {
                 updatedCart = await deleteCartItemApi(itemId);
-                notify('Товар удалён из корзины', 'info');
+                showToast('товар удален из корзины', 'info');
             }
 
+            // перерисовываем корзину по свежим данным которые вернул бэкенд
             if (updatedCart) {
                 renderCart(updatedCart);
             }
         } catch (error) {
-            notify(error.message || 'Ошибка при обновлении корзины', 'error');
+            showToast(error.message || 'ошибка при обновлении корзины', 'error');
             rowButtons.forEach((btn) => (btn.disabled = false));
         }
     });
 
-    // Кнопка оформления заказа (очищает корзину через DELETE /cart)
+    // кнопка оформления заказа очищает корзину на сервере через DELETE /cart
     const checkoutBtn = document.getElementById('checkoutBtn');
     if (checkoutBtn) {
         checkoutBtn.addEventListener('click', async () => {
             if (!isAuthenticated()) {
-                notify('Войдите в аккаунт для оформления заказа', 'warning');
+                showToast('войдите в аккаунт для оформления заказа', 'warning');
                 return;
             }
 
@@ -271,9 +287,9 @@ function initCartEvents() {
                 checkoutBtn.textContent = 'Processing...';
                 const emptyCart = await clearCartApi();
                 renderCart(emptyCart);
-                notify('Заказ успешно оформлен!', 'success');
+                showToast('заказ успешно оформлен', 'success');
             } catch (error) {
-                notify(error.message || 'Ошибка при оформлении заказа', 'error');
+                showToast(error.message || 'ошибка при оформлении заказа', 'error');
             } finally {
                 checkoutBtn.textContent = 'Go to Checkout';
             }
@@ -281,6 +297,7 @@ function initCartEvents() {
     }
 }
 
+// инициализация страницы корзины
 function initCartPage() {
     if (!document.getElementById('cartItemsContainer')) return;
     initCartEvents();

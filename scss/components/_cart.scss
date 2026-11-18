@@ -1,22 +1,24 @@
-// стили корзины
+// подключение переменных и миксинов
+@use '../abstracts/variables' as v;
+@use '../abstracts/mixins' as m;
+
+// #корзина #секциякорзины #yourcart #cartsection #страницакорзины
+// главный контейнер страницы Cart.html со списком товаров слева и итогом заказа справа
 .cart-section {
-    max-width: 1240px;
+    @include m.container;
     margin: 0 auto 80px;
-    padding: 0 16px;
 
+    // #заголовоккорзины #h1 #yourcarttitle
     &__title {
-        font-size: 40px;
-        font-weight: 900;
-        text-transform: uppercase;
+        @include m.section-title(40px, 32px);
         margin: 24px 0 24px;
-        color: #000;
 
-        @media (max-width: 768px) {
-            font-size: 32px;
+        @media (max-width: v.$BreakpointMobile) {
             margin: 16px 0 20px;
         }
     }
 
+    // #макеткорзины #двеколонки #cartlayout
     &__layout {
         display: flex;
         gap: 20px;
@@ -28,45 +30,87 @@
     }
 }
 
-// список карточек товаров
+// #списоктоваров #контейнертоваровкорзины #бокстоваров #cartitems #леваяколонка
+// белый скругленный блок со списком добавленных товаров
 .cart-items {
+    @include m.bordered-box(20px 24px, v.$RadiusCard);
     flex: 1;
-    border: 1px solid rgba(0, 0, 0, 0.1);
-    border-radius: 20px;
-    padding: 20px 24px;
-    background: #fff;
     width: 100%;
 
-    @media (max-width: 576px) {
+    @media (max-width: v.$BreakpointSmall) {
         padding: 14px 16px;
     }
 
+    // #разделительтоваров #линия #hr #divider
     &__divider {
         border: none;
-        border-top: 1px solid rgba(0, 0, 0, 0.1);
+        border-top: 1px solid v.$BorderLight;
         margin: 20px 0;
+    }
+
+    // #статусзагрузки #загрузкакорзины #ошибкакорзины #status
+    &__status {
+        padding: 24px;
+        text-align: center;
+        color: v.$TextGray;
+
+        &--error {
+            color: v.$TextRed;
+        }
     }
 }
 
-// карточка отдельной позиции
+// #пустаякорзина #гостькорзина #войти #cartempty #заглушкакорзины
+// блок заглушка когда в корзине нет товаров или пользователь не вошел в аккаунт
+.cart-empty {
+    text-align: center;
+    padding: 48px 20px;
+
+    // #заголовокпустойкорзины #emptytitle
+    &__title {
+        font-size: 22px;
+        font-weight: 700;
+        margin-bottom: 10px;
+        color: v.$TextBlack;
+    }
+
+    // #текстпустойкорзины #emptytext
+    &__text {
+        color: v.$TextGray;
+        margin-bottom: 24px;
+    }
+
+    // #кнопкавкаталог #кнопкавойти #emptybtn
+    &__btn {
+        display: inline-flex;
+        width: auto;
+        padding: 14px 36px;
+        margin-top: 0;
+    }
+}
+
+// #позициякорзины #товарвкорзине #строкатовара #cartitem #карточкакорзины
+// одна строка товара в корзине с фото размером цветом ценой и кнопкой удаления
 .cart-item {
     display: flex;
     gap: 16px;
 
+    // #фототоваракорзина #миниатюра #imagewrap
     &__image-wrap {
         width: 124px;
         height: 124px;
-        border-radius: 9px;
-        background-color: #f0eeed;
+        border-radius: v.$RadiusSmall;
+        background-color: v.$CardThumbBackground;
         overflow: hidden;
         flex-shrink: 0;
 
-        @media (max-width: 576px) {
+        @media (max-width: v.$BreakpointSmall) {
             width: 100px;
             height: 100px;
         }
     }
 
+    // #картинка #img
     &__img {
         width: 100%;
         height: 100%;
@@ -74,6 +118,7 @@
         display: block;
     }
 
+    // #контентпозиции #праваячастьстроки #content
     &__content {
         flex: 1;
         display: flex;
@@ -81,23 +126,26 @@
         justify-content: space-between;
     }
 
+    // #верхстроки #названиеиудаление #header
     &__header {
         display: flex;
         justify-content: space-between;
         align-items: flex-start;
     }
 
+    // #названиетовара #title
     &__title {
         font-size: 20px;
         font-weight: 700;
         margin: 0;
-        color: #000;
+        color: v.$TextBlack;
 
-        @media (max-width: 576px) {
+        @media (max-width: v.$BreakpointSmall) {
             font-size: 16px;
         }
     }
 
+    // #удалитьтовар #корзинаиконка #мусорка #deletebtn #кнопкаудаления
     &__delete-btn {
         background: transparent;
         border: none;
@@ -111,6 +159,7 @@
         }
     }
 
+    // #характеристики #размерицвет #meta
     &__meta {
         display: flex;
         flex-direction: column;
@@ -118,39 +167,40 @@
         margin: 4px 0 8px;
     }
 
+    // #свойство #размер #цвет #prop
     &__prop {
         font-size: 14px;
-        color: rgba(0, 0, 0, 0.6);
+        color: v.$TextGray;
 
         strong {
-            color: #000;
+            color: v.$TextBlack;
             font-weight: 400;
         }
     }
 
+    // #низстроки #ценаисчетчик #footer
     &__footer {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
+        @include m.flex-between;
     }
 
+    // #ценапозиции #стоимостьтовара #price
     &__price {
         font-size: 24px;
         font-weight: 700;
-        color: #000;
+        color: v.$TextBlack;
 
-        @media (max-width: 576px) {
+        @media (max-width: v.$BreakpointSmall) {
             font-size: 20px;
         }
     }
 }
 
-// компактный счетчик количества
+// #маленькийсчетчик #счетчиккорзины #quantitysmall
 .quantity-control--small {
     width: 126px;
     padding: 10px 18px;
 
-    @media (max-width: 576px) {
+    @media (max-width: v.$BreakpointSmall) {
         width: 105px;
         padding: 8px 12px;
     }
@@ -164,154 +214,136 @@
     }
 }
 
-// блок сводки заказа
+// #итогозаказа #сводказаказа #чек #ordersummary #праваяколонка #суммазаказа
+// правый блок с расчетом подытога скидки доставки и кнопкой оформления заказа
 .order-summary {
+    @include m.bordered-box(20px 24px, v.$RadiusCard);
     width: 505px;
-    border: 1px solid rgba(0, 0, 0, 0.1);
-    border-radius: 20px;
-    padding: 20px 24px;
-    background: #fff;
     flex-shrink: 0;
 
     @media (max-width: 992px) {
         width: 100%;
     }
 
+    // #заголовокчека #ordersummarytitle
     &__title {
         font-size: 24px;
         font-weight: 700;
         margin: 0 0 24px;
-        color: #000;
+        color: v.$TextBlack;
 
-        @media (max-width: 576px) {
+        @media (max-width: v.$BreakpointSmall) {
             font-size: 20px;
             margin-bottom: 16px;
         }
     }
 
+    // #строкирасчета #rows
     &__rows {
         display: flex;
         flex-direction: column;
         gap: 20px;
     }
 
+    // #строкасуммы #подытог #скидка #доставка #итого #row
     &__row {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
+        @include m.flex-between;
 
         &--total {
             .order-summary__label {
                 font-size: 20px;
-                color: #000;
+                color: v.$TextBlack;
             }
 
             .order-summary__value {
                 font-size: 24px;
                 font-weight: 700;
-                color: #000;
+                color: v.$TextBlack;
             }
         }
     }
 
+    // #подписьстроки #subtotal #discount #delivery #total #label
     &__label {
         font-size: 20px;
-        color: rgba(0, 0, 0, 0.6);
+        color: v.$TextGray;
 
-        @media (max-width: 576px) {
+        @media (max-width: v.$BreakpointSmall) {
             font-size: 16px;
         }
     }
 
+    // #сумма #цифра #краснаяскидка #value
     &__value {
         font-size: 20px;
         font-weight: 700;
-        color: #000;
+        color: v.$TextBlack;
 
-        @media (max-width: 576px) {
+        @media (max-width: v.$BreakpointSmall) {
             font-size: 16px;
         }
 
         &--discount {
-            color: #ff3333;
+            color: v.$TextRed;
         }
     }
 
+    // #разделительчека #линия #hr #divider
     &__divider {
         border: none;
-        border-top: 1px solid rgba(0, 0, 0, 0.1);
+        border-top: 1px solid v.$BorderLight;
         margin: 0;
     }
 
+    // #кнопкаоформить #оформитьзаказ #checkout #gotocheckout #главнаякнопкакорзины
     &__checkout-btn {
+        @include m.btn-pill-dark(56px, 16px);
         width: 100%;
-        background: #000;
-        color: #fff;
         border: none;
-        border-radius: 62px;
-        padding: 18px 24px;
-        font-size: 16px;
-        font-weight: 500;
-        cursor: pointer;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 12px;
         margin-top: 24px;
-        transition: opacity 0.2s ease;
-
-        &:hover {
-            opacity: 0.85;
-        }
     }
 }
 
-// блок промокода
+// #промокод #формапромокода #купон #promoform #скидкакод
 .promo-form {
     display: flex;
     gap: 12px;
     margin-top: 24px;
 
+    // #полепромокода #оберткаинпута #inputwrap
     &__input-wrap {
         flex: 1;
-        background: #f0f0f0;
-        border-radius: 62px;
+        background: v.$DarknessBaseBackground;
+        border-radius: v.$RadiusPill;
         display: flex;
         align-items: center;
         padding: 12px 16px;
         gap: 12px;
     }
 
+    // #иконкабирки #icon
     &__icon {
         flex-shrink: 0;
     }
 
+    // #инпутпромокода #input
     &__input {
         background: transparent;
         border: none;
         outline: none;
         width: 100%;
         font-size: 16px;
-        color: #000;
+        color: v.$TextBlack;
 
         &::placeholder {
-            color: rgba(0, 0, 0, 0.4);
+            color: v.$TextMuted;
         }
     }
 
+    // #кнопкаприменитьпромокод #apply #promobtn
     &__btn {
-        background: #000;
-        color: #fff;
+        @include m.btn-pill-dark(48px, 16px);
         border: none;
-        border-radius: 62px;
         padding: 12px 28px;
-        font-size: 16px;
-        font-weight: 500;
-        cursor: pointer;
-        transition: opacity 0.2s ease;
-
-        &:hover {
-            opacity: 0.85;
-        }
     }
 }

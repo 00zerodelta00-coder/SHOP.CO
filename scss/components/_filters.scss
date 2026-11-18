@@ -1,45 +1,41 @@
-// Подключение переменных и миксинов
-
+// подключение переменных и миксинов
 @use '../abstracts/variables' as v;
 @use '../abstracts/mixins' as m;
 
-// Настройка фильтров
-
+// #сеткакаталога #макеткаталога #раскладка #cataloglayout #контейнеркаталога #бокс
+// двухколоночный макет страницы каталога: панель фильтров слева и сетка товаров справа
 .catalog-layout {
-  width: 100%;
-  max-width: 1240px;
-  margin: 0 auto;
-  padding: 0 16px;
+  @include m.container;
   display: flex;
   align-items: flex-start;
   gap: 20px;
 
-  @media (max-width: 1024px) {
+  @media (max-width: v.$BreakpointTablet) {
     flex-direction: column;
   }
 }
 
+// #фильтры #панельфильтров #боковаяпанель #сайтбар #filters #сайдбар
+// левая карточка с фильтрами по категориям цене цветам размерам и стилю
 .filters {
+  @include m.bordered-box(20px 24px, v.$RadiusCard);
   width: 295px;
-  border: 1px solid rgba(0, 0, 0, 0.1);
-  border-radius: 20px;
-  padding: 20px 24px;
   flex-shrink: 0;
 
-  @media (max-width: 1024px) {
+  @media (max-width: v.$BreakpointTablet) {
     width: 100%;
   }
 
+  // #формафильтров #filtersform
   &__form {
     display: flex;
     flex-direction: column;
     gap: 24px;
   }
 
+  // #шапкафильтров #заголовокфильтров #иконкафильтра #filtersheader
   &__header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+    @include m.flex-between;
 
     h3 {
       font-size: 20px;
@@ -52,12 +48,14 @@
     }
   }
 
+  // #линияфильтров #разделитель #hr #border
   &__divider {
     border: none;
-    border-top: 1px solid rgba(0, 0, 0, 0.1);
+    border-top: 1px solid v.$BorderLight;
     margin: 0;
   }
 
+  // #категории #списоккатегорий #одежда #categorylist #футболки #шорты #джинсы
   &__category-list {
     list-style: none;
     display: flex;
@@ -65,10 +63,9 @@
     gap: 16px;
   }
 
+  // #пункткатегории #кнопкакатегории #стрелка #categoryitem
   &__category-item {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+    @include m.flex-between;
 
     button {
       background: transparent;
@@ -84,12 +81,11 @@
     }
   }
 
+  // #заголовкиблоковфильтра #аккордеон #ценашапка #размершапка #стильшапка
   &__price-header,
   &__size-header,
   &__style-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+    @include m.flex-between;
 
     h3,
     legend {
@@ -105,6 +101,7 @@
     }
   }
 
+  // #ползунокцены #диапазонцен #слайдерцены #price #rangeslider #стоимость
   &__range-slider {
     position: relative;
     width: 100%;
@@ -125,6 +122,7 @@
     }
   }
 
+  // #активнаяполоса #чернаялинияцены #rangetrack
   &__range-track {
     position: absolute;
     height: 6px;
@@ -135,6 +133,7 @@
     right: 40%;
   }
 
+  // #бегунок #инпутдиапазона #кружокползунка #rangeinput
   &__range-input {
     position: absolute;
     left: 0;
@@ -151,7 +150,7 @@
     &::-webkit-slider-thumb {
       width: 20px;
       height: 20px;
-      border-radius: 50%;
+      border-radius: v.$RadiusCircle;
       background-color: v.$BlockBlack;
       cursor: pointer;
       pointer-events: auto;
@@ -159,6 +158,7 @@
     }
   }
 
+  // #цифрыцены #значениядиапазона #минмакс #rangevalues
   &__range-values {
     position: relative;
     width: 100%;
@@ -166,6 +166,7 @@
     margin-top: 6px;
   }
 
+  // #подписьцены #rangeval
   &__range-val {
     position: absolute;
     transform: translateX(-50%);
@@ -181,6 +182,7 @@
     }
   }
 
+  // #цвета #сеткацветов #палитра #выборцвета #colors
   &__colors {
     border: none;
     padding: 0;
@@ -200,6 +202,7 @@
     }
   }
 
+  // #размеры #списокразмеров #кнопкиразмеров #sizelist
   &__size-list {
     display: flex;
     flex-wrap: wrap;
@@ -207,26 +210,24 @@
     margin-top: 12px;
   }
 
+  // #стильодежды #dressstyle #стильблок
   &__dress-style {
     display: flex;
     flex-direction: column;
     gap: 16px;
   }
 
+  // #кнопкаприменить #применитьфильтр #applyfilter #кнопкафильтра #submit
   &__submit {
+    @include m.btn-pill-dark(48px, 14px);
     width: 100%;
-    height: 48px;
-    background-color: v.$BlockBlack;
-    color: v.$TextWhite;
     border: none;
-    border-radius: 62px;
-    font-size: 14px;
-    font-weight: 500;
-    cursor: pointer;
     margin-top: 8px;
   }
 }
 
+// #кружокцвета #чекбоксцвета #галочкацвета #coloroption #кружочек
+// кастомный круглый выбор цвета со скрытым чекбоксом и белой/черной галочкой внутри
 .color-option {
   position: relative;
   cursor: pointer;
@@ -249,18 +250,59 @@
     }
   }
 
+  // #визуалцвета #кружочекцвета #цветафильтров #colorvisual
   &__visual {
+    @include m.flex-center;
     width: 37px;
     height: 37px;
-    border-radius: 50%;
-    border: 1px solid rgba(0, 0, 0, 0.2);
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    border-radius: v.$RadiusCircle;
+    border: 1px solid v.$BorderMedium;
     position: relative;
+
+    &--green {
+      background-color: #00C12B;
+    }
+
+    &--red {
+      background-color: #F50606;
+    }
+
+    &--yellow {
+      background-color: #F5DD06;
+    }
+
+    &--orange {
+      background-color: #F57906;
+    }
+
+    &--lightblue {
+      background-color: #06CAF5;
+    }
+
+    &--blue {
+      background-color: #063AF5;
+    }
+
+    &--purple {
+      background-color: #7D06F5;
+    }
+
+    &--pink {
+      background-color: #F506A4;
+    }
+
+    &--white {
+      background-color: #FFFFFF;
+    }
+
+    &--black {
+      background-color: #000000;
+    }
   }
 }
 
+// #пилюляразмера #кнопкаразмера #таблеткаразмера #sizepill #размер
+// кнопка выбора размера в фильтрах (Small Medium Large X-Large)
 .size-pill {
   cursor: pointer;
   display: inline-flex;
@@ -276,14 +318,13 @@
     }
   }
 
+  // #текстразмера #плашкаразмера #sizelabel
   &__label {
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    @include m.flex-center;
     min-width: 74px;
     height: 39px;
     padding: 10px 16px;
-    border-radius: 62px;
+    border-radius: v.$RadiusPill;
     background-color: v.$DarknessBaseBackground;
     color: v.$TextGray;
     font-size: 14px;

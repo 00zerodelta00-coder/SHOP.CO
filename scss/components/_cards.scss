@@ -97,7 +97,7 @@
 }
 
 // #карточкатовара #товар #картатовара #productcard #карточка #бокстовара
-// отдельная карточка товара с фото названием рейтингом и ценой
+// отдельная карточка товара с фото названием рейтингом ценой и кнопкой быстрого добавления в корзину
 .product-card {
   position: relative;
   width: 100%;
@@ -118,16 +118,6 @@
       width: 100%;
       height: 100%;
       object-fit: cover;
-    }
-
-    // #кнопкавкорзину #купитьвкарточке #addcartbtn #кнопкатовара
-    &__add-btn {
-      @include m.btn-pill-dark(40px, 14px);
-      position: relative;
-      z-index: 2;
-      width: 100%;
-      margin-top: auto;
-      padding: 0 16px;
     }
   }
 
@@ -182,6 +172,7 @@
     align-items: center;
     gap: 10px;
     margin-top: 4px;
+    padding-bottom: 8px;
   }
 
   // #цена #стоимость #актуальнаяцена #стараяцена #price #oldprice
@@ -204,5 +195,30 @@
     font-weight: 500;
     border-radius: v.$RadiusPill;
     padding: 4px 10px;
+  }
+
+  // #кнопкавкорзину #купитьвкарточке #addcartbtn #кнопкатовара
+  // капсульная кнопка добавления в корзину поверх ссылки карточки (z-index: 2)
+  &__add-btn {
+    @include m.btn-pill-dark(44px, 14px);
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    margin-top: auto;
+    padding-top: 0;
+    padding-bottom: 0;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+
+    &:hover:not(:disabled) {
+      opacity: 1;
+      background-color: #1a1a1a;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.16);
+    }
+
+    &:active:not(:disabled) {
+      transform: translateY(0);
+      box-shadow: none;
+    }
   }
 }

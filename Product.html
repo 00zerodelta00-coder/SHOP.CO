@@ -12,7 +12,6 @@
 <body>
 
     <!-- #верхняяплашка #акция #баннерсверху #скидка20 #topbar -->
-    <!-- самая верхняя черная полоска с предложением скидки и кнопкой закрытия -->
     <div class="top-bar">
         <p class="top-bar__text">
             Sign up and get 20% off to your first order.
@@ -24,17 +23,14 @@
     </div>
 
     <!-- #шапка #хедер #меню #поиск #навигация #header -->
-    <!-- главная шапка сайта с логотипом меню строкой поиска и иконками корзины и профиля -->
     <header class="header">
         <div class="header__inner">
-            <!-- #логотип #logo -->
             <div class="header__logo">
                 <a href="index.html">
                     <img src="./assest/icons/SHOP.CO.svg" alt="SHOP.CO">
                 </a>
             </div>
 
-            <!-- #навигация #ссылкишапки #nav -->
             <nav class="header__nav">
                 <a href="Category.html">Shop <img src="./assest/icons/CornerDown.svg" alt="arrow down"></a>
                 <a href="#">On Sale</a>
@@ -42,13 +38,11 @@
                 <a href="#">Brands</a>
             </nav>
 
-            <!-- #поиск #строкапоиска #search -->
             <form action="/search" method="get" class="header__search">
                 <img src="./assest/icons/Loop.svg" alt="search">
                 <input id="searchInput" type="search" name="search" placeholder="Search for products...">
             </form>
 
-            <!-- #иконкишапки #корзина #профиль #actions -->
             <div class="header__actions">
                 <a href="Cart.html" aria-label="cart">
                     <img src="./assest/icons/Cart.svg" alt="cart">
@@ -62,8 +56,7 @@
     </header>
 
     <main>
-        <!-- #хлебныекрошки #навигацияпуть #крошки #breadcrumbs -->
-        <!-- навигационная цепочка под шапкой с категорией текущего товара -->
+        <!-- #хлебныекрошки #breadcrumbs -->
         <nav class="breadcrumbs" aria-label="breadcrumbs">
             <a href="index.html">Home</a>
             <img src="./assest/icons/CornerRight.svg" alt="arrow">
@@ -72,13 +65,23 @@
             <span class="breadcrumbs__current" id="breadcrumbProductName">Product</span>
         </nav>
 
-        <!-- #товардетально #страницатовара #карточкатовара #productview -->
-        <!-- главный блок детального просмотра товара: галерея слева и характеристики с покупкой справа -->
-        <section class="product-view">
+        <!-- #ошибкатовара #товарненайден #producterror -->
+        <!-- блок показывается если сервер не ответил или передан несуществующий id товара -->
+        <section class="product-error" id="productErrorState" hidden>
+            <div class="product-error__box">
+                <h1 class="product-error__title">PRODUCT NOT FOUND</h1>
+                <p class="product-error__text" id="productErrorText">
+                    Sorry, we couldn’t load this product. It may have been removed or the server is unavailable.
+                </p>
+                <a href="Category.html" class="product-error__btn">Back to Catalog</a>
+            </div>
+        </section>
+
+        <!-- #товардетально #страницатовара #productview -->
+        <section class="product-view" id="productViewSection">
             <div class="product-view__container">
 
-                <!-- #галерея #фотогалерея #картинкитовара #gallery -->
-                <!-- левая колонка с тремя миниатюрами и большим главным фото товара -->
+                <!-- #галерея #фотогалерея #gallery -->
                 <div class="product-view__gallery">
                     <div class="product-view__thumbs">
                         <button type="button" class="product-view__thumb-btn product-view__thumb-btn--active">
@@ -99,31 +102,27 @@
                     </div>
                 </div>
 
-                <!-- #деталитовара #характеристики #описание #выборцвета #выборразмера #details -->
-                <!-- правая колонка куда из js/product.js подставляются название рейтинг цена цвета размеры и кнопка покупки -->
+                <!-- #деталитовара #характеристики #details -->
                 <div class="product-view__details">
                     <h1 class="product-view__title" id="productTitle">Loading product...</h1>
 
-                    <!-- #рейтинг #звезды #rating -->
                     <div class="product-view__rating">
                         <div class="product-view__stars" id="productStars" aria-label="product rating"></div>
                         <span class="product-view__score" id="productRatingVal">0/<span
                                 class="product-view__score-max">5</span></span>
                     </div>
 
-                    <!-- #цена #стоимость #скидка #pricebox -->
                     <div class="product-view__price-box">
                         <span class="product-view__price" id="productPrice">$0</span>
                         <span class="product-view__old-price" id="productOldPrice"></span>
                         <span class="product-view__discount" id="productDiscount"></span>
                     </div>
 
-                    <!-- #описаниетовара #description -->
                     <p class="product-view__description" id="productDescription"></p>
 
                     <hr class="product-view__divider">
 
-                    <!-- #выборцвета #палитра #colorPicker -->
+                    <!-- #выборцвета #colorPicker -->
                     <div class="product-view__section">
                         <span class="product-view__label">Select Colors</span>
                         <div class="product-view__colors" id="colorPicker"></div>
@@ -131,7 +130,7 @@
 
                     <hr class="product-view__divider">
 
-                    <!-- #выборразмера #размеры #sizePicker -->
+                    <!-- #выборразмера #sizePicker -->
                     <div class="product-view__section">
                         <span class="product-view__label">Choose Size</span>
                         <div class="product-view__sizes" id="sizePicker"></div>
@@ -139,7 +138,7 @@
 
                     <hr class="product-view__divider">
 
-                    <!-- #количество #добавитьвкорзину #счетчик #actions #addtocart -->
+                    <!-- #количество #добавитьвкорзину #actions -->
                     <div class="product-view__actions">
                         <div class="quantity-control">
                             <button type="button" class="quantity-control__btn" id="btnMinus"
@@ -156,21 +155,30 @@
             </div>
         </section>
 
-        <!-- #табы #вкладки #описаниеиотзывы #detailstabs -->
-        <!-- панель переключения вкладок под карточкой товара -->
-        <section class="details-tabs">
+        <!-- #табы #вкладки #переключатель #detailstabs -->
+        <section class="details-tabs" id="detailsTabsSection">
             <div class="details-tabs__nav">
-                <button type="button" class="details-tabs__tab">Product Details</button>
-                <button type="button" class="details-tabs__tab details-tabs__tab--active">Rating & Reviews</button>
-                <button type="button" class="details-tabs__tab">FAQs</button>
+                <button type="button" class="details-tabs__tab" data-tab="details">Product Details</button>
+                <button type="button" class="details-tabs__tab details-tabs__tab--active" data-tab="reviews">Rating &
+                    Reviews</button>
+                <button type="button" class="details-tabs__tab" data-tab="faqs">FAQs</button>
             </div>
         </section>
 
-        <!-- #отзывытовара #всеотзывы #комментарии #reviewssection -->
-        <!-- блок с отзывами покупателей о конкретном товаре -->
-        <section class="reviews-section">
+        <!-- #вкладкахарактеристик #описаниетовараподробно #tabPanelDetails -->
+        <section class="tab-panel" id="tabPanelDetails" hidden>
+            <div class="tab-panel__box">
+                <h2 class="tab-panel__title">Product Specifications</h2>
+                <p class="tab-panel__desc" id="tabDetailsDescription"></p>
+                <ul class="tab-panel__specs" id="tabDetailsSpecs"></ul>
+            </div>
+        </section>
+
+        <!-- #вкладкаотзывов #всеотзывы #reviewssection #tabPanelReviews -->
+        <section class="reviews-section" id="tabPanelReviews">
             <div class="reviews-section__header">
-                <h2 class="reviews-section__title">All Reviews <span class="reviews-section__count">(451)</span></h2>
+                <h2 class="reviews-section__title">All Reviews <span class="reviews-section__count"
+                        id="reviewsCount">(4)</span></h2>
                 <div class="reviews-section__actions">
                     <button type="button" class="btn-circle-filter" aria-label="filters">
                         <img src="./assest/icons/FilterIco.svg" alt="filter icon">
@@ -224,9 +232,9 @@
                             </svg>
                         </span>
                     </div>
-                    <p class="review-box__comment">"I absolutely love this t-shirt! The design is unique and the fabric
+                    <p class="review-box__comment">"I absolutely love this piece! The design is unique and the fabric
                         feels so comfortable. As a fellow designer, I appreciate the attention to detail. It's become my
-                        favorite go-to shirt."</p>
+                        favorite go-to item."</p>
                     <time class="review-box__date">Posted on August 14, 2023</time>
                 </article>
 
@@ -265,9 +273,9 @@
                             </svg>
                         </span>
                     </div>
-                    <p class="review-box__comment">"The t-shirt exceeded my expectations! The colors are vibrant and the
-                        print quality is top-notch. Being a UX/UI designer myself, I'm quite picky about aesthetics, and
-                        this t-shirt definitely gets a thumbs up from me."</p>
+                    <p class="review-box__comment">"Exceeded my expectations! The colors are vibrant and the material
+                        quality is top-notch. Being a UX/UI designer myself, I'm quite picky about aesthetics, and this
+                        definitely gets a thumbs up from me."</p>
                     <time class="review-box__date">Posted on August 16, 2023</time>
                 </article>
 
@@ -302,9 +310,9 @@
                             </svg>
                         </span>
                     </div>
-                    <p class="review-box__comment">"This t-shirt is a must-have for anyone who appreciates good design.
-                        The minimalistic yet stylish pattern caught my eye, and the fit is perfect. I can see the
-                        designer's touch in every aspect of this shirt."</p>
+                    <p class="review-box__comment">"A must-have for anyone who appreciates good design. The minimalistic
+                        yet stylish cut caught my eye, and the fit is perfect. I can see the designer's touch in every
+                        aspect."</p>
                     <time class="review-box__date">Posted on August 16, 2023</time>
                 </article>
 
@@ -344,27 +352,45 @@
                         </span>
                     </div>
                     <p class="review-box__comment">"As a UX/UI enthusiast, I value simplicity and functionality. This
-                        t-shirt not only represents those principles but also feels great to wear. It's evident that the
-                        designer poured their creativity into making this t-shirt stand out."</p>
+                        item not only represents those principles but also feels great to wear. It's evident that the
+                        designer poured creativity into making it stand out."</p>
                     <time class="review-box__date">Posted on August 17, 2023</time>
                 </article>
             </div>
+        </section>
 
-            <div class="reviews-section__more">
-                <button type="button" class="btn-outline">Load More Reviews</button>
+        <!-- #вкладкавопросов #частыевопросы #faq #tabPanelFaqs -->
+        <section class="tab-panel" id="tabPanelFaqs" hidden>
+            <div class="tab-panel__box">
+                <h2 class="tab-panel__title">Frequently Asked Questions</h2>
+                <div class="faq-list">
+                    <div class="faq-list__item">
+                        <h3 class="faq-list__question">How do I choose the right size?</h3>
+                        <p class="faq-list__answer">Our garments follow standard international sizing. If you prefer a
+                            relaxed fit, we recommend choosing one size up.</p>
+                    </div>
+                    <div class="faq-list__item">
+                        <h3 class="faq-list__question">What are the shipping times and delivery fees?</h3>
+                        <p class="faq-list__answer">Standard delivery takes 3–5 business days with a flat $15 delivery
+                            fee calculated automatically in your cart.</p>
+                    </div>
+                    <div class="faq-list__item">
+                        <h3 class="faq-list__question">Can I return or exchange an item?</h3>
+                        <p class="faq-list__answer">Yes, unworn items with original tags can be returned or exchanged
+                            within 30 days of delivery.</p>
+                    </div>
+                </div>
             </div>
         </section>
 
-        <!-- #похожиетовары #рекомендации #relatedproducts #вампонравится -->
-        <!-- сюда из js/product.js автоматически подгружаются 4 похожих товара из той же категории -->
+        <!-- #похожиетовары #relatedproducts -->
         <section class="related-products">
             <h2 class="related-products__title">YOU MIGHT ALSO LIKE</h2>
             <ul class="related-products__grid" id="relatedProductsGrid"></ul>
         </section>
     </main>
 
-    <!-- #рассылка #подписка #черныйбаннер #newsletter -->
-    <!-- черный блок подписки на рассылку перед подвалом -->
+    <!-- #рассылка #newsletter -->
     <section class="newsletter">
         <h2 class="newsletter__title">STAY UPTO DATE ABOUT<br>OUR LATEST OFFERS</h2>
         <form class="newsletter__form" action="#" method="post">
@@ -376,8 +402,7 @@
         </form>
     </section>
 
-    <!-- #подвал #футер #контакты #оплата #footer -->
-    <!-- подвал сайта с логотипом соцсетями меню ссылок и платежными системами -->
+    <!-- #подвал #footer -->
     <footer class="footer">
         <div class="footer__main">
             <div class="footer__brand">
@@ -444,7 +469,6 @@
         </div>
     </footer>
 
-    <!-- #скрипты #модули #scripts -->
     <script type="module" src="./js/auth.js"></script>
     <script type="module" src="./js/product.js"></script>
 </body>

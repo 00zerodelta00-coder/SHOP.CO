@@ -574,3 +574,112 @@
         }
     }
 }
+
+// #ошибкатовара #товарненайден #producterror
+// блок ошибки при загрузке товара или неверном id
+.product-error {
+    @include m.container;
+    margin: 20px auto 80px;
+
+    &__box {
+        @include m.bordered-box(60px 24px, v.$RadiusCard);
+        text-align: center;
+    }
+
+    &__title {
+        @include m.section-title(36px, 26px);
+        margin-bottom: 12px;
+    }
+
+    &__text {
+        font-size: 16px;
+        color: v.$TextGray;
+        max-width: 480px;
+        margin: 0 auto 28px;
+    }
+
+    &__btn {
+        @include m.btn-pill-dark(52px, 16px);
+        display: inline-flex;
+        padding: 0 36px;
+    }
+}
+
+// #панельвкладки #характеристики #faq #tabpanel
+// содержимое вкладок Product Details и FAQs на странице товара
+.tab-panel {
+    @include m.container;
+    margin: 0 auto 60px;
+
+    &__box {
+        @include m.bordered-box(32px, v.$RadiusCard);
+    }
+
+    &__title {
+        font-size: 24px;
+        font-weight: 700;
+        margin-bottom: 16px;
+        color: v.$TextBlack;
+    }
+
+    &__desc {
+        font-size: 16px;
+        line-height: 1.6;
+        color: v.$TextGray;
+        margin-bottom: 24px;
+    }
+
+    &__specs {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 14px 32px;
+
+        @media (max-width: v.$BreakpointMobile) {
+            grid-template-columns: 1fr;
+        }
+
+        li {
+            display: flex;
+            justify-content: space-between;
+            padding-bottom: 10px;
+            border-bottom: 1px solid v.$BorderLight;
+            font-size: 15px;
+            color: v.$TextGray;
+
+            strong {
+                color: v.$TextBlack;
+                font-weight: 600;
+            }
+        }
+    }
+}
+
+// #списоквопросов #частыевопросы #faqlist
+.faq-list {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+
+    &__item {
+        padding-bottom: 16px;
+        border-bottom: 1px solid v.$BorderLight;
+
+        &:last-child {
+            border-bottom: none;
+            padding-bottom: 0;
+        }
+    }
+
+    &__question {
+        font-size: 18px;
+        font-weight: 700;
+        color: v.$TextBlack;
+        margin-bottom: 6px;
+    }
+
+    &__answer {
+        font-size: 15px;
+        line-height: 1.5;
+        color: v.$TextGray;
+    }
+}

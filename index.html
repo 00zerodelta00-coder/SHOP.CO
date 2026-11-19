@@ -175,23 +175,46 @@
       </div>
     </section>
 
-    <!-- #отзывы #покупатели #reviews #happycustomers -->
-    <!-- блок отзывов покупателей на главной странице -->
+    <!-- #отзывы #покупатели #reviews #happycustomers #слайдеротзывов -->
+    <!-- карусель отзывов с 3 центральными карточками и боковыми размытыми превью как в макете -->
     <section class="reviews">
       <div class="container">
         <div class="reviews__header">
           <h2 class="reviews__title">OUR HAPPY CUSTOMERS</h2>
           <div class="reviews__arrows">
-            <button class="reviews__arrow" type="button" aria-label="previous reviews">
+            <button class="reviews__arrow reviews__arrow--prev" type="button" aria-label="previous reviews">
               <img src="./assest/icons/ArrowLeft.svg" alt="back">
             </button>
-            <button class="reviews__arrow" type="button" aria-label="next reviews">
+            <button class="reviews__arrow reviews__arrow--next" type="button" aria-label="next reviews">
               <img src="./assest/icons/ArrowRight.svg" alt="forward">
             </button>
           </div>
         </div>
+      </div>
 
-        <div class="reviews__list">
+      <!-- #лентаотзывов #reviewsslider #reviewsList -->
+      <div class="reviews__slider">
+        <div class="reviews__list" id="reviewsList">
+          <!-- #боковаякарточкаслева #sarah -->
+          <article class="review-card review-card--side">
+            <div class="review-card__stars">
+              <img src="./assest/icons/Star.svg" alt="star">
+              <img src="./assest/icons/Star.svg" alt="star">
+              <img src="./assest/icons/Star.svg" alt="star">
+              <img src="./assest/icons/Star.svg" alt="star">
+              <img src="./assest/icons/Star.svg" alt="star">
+            </div>
+            <div class="review-card__user">
+              <span class="review-card__name">Sarah M.</span>
+              <img class="review-card__verified" src="./assest/icons/True.svg" alt="verified">
+            </div>
+            <p class="review-card__text">
+              "I'm blown away by the quality and style of the clothes I received from Shop.co. From casual wear to
+              elegant dresses, every piece I've bought has exceeded my expectations.”
+            </p>
+          </article>
+
+          <!-- #карточкаотзыва1 #sarah -->
           <article class="review-card">
             <div class="review-card__stars">
               <img src="./assest/icons/Star.svg" alt="star">
@@ -210,6 +233,7 @@
             </p>
           </article>
 
+          <!-- #карточкаотзыва2 #alex -->
           <article class="review-card">
             <div class="review-card__stars">
               <img src="./assest/icons/Star.svg" alt="star">
@@ -228,6 +252,7 @@
             </p>
           </article>
 
+          <!-- #карточкаотзыва3 #james -->
           <article class="review-card">
             <div class="review-card__stars">
               <img src="./assest/icons/Star.svg" alt="star">
@@ -243,6 +268,25 @@
             <p class="review-card__text">
               "As someone who's always on the lookout for unique fashion pieces, I'm thrilled to have stumbled upon
               Shop.co. The selection of clothes is not only diverse but also on-point with the latest trends."
+            </p>
+          </article>
+
+          <!-- #боковаякарточкасправа #mooen -->
+          <article class="review-card review-card--side">
+            <div class="review-card__stars">
+              <img src="./assest/icons/Star.svg" alt="star">
+              <img src="./assest/icons/Star.svg" alt="star">
+              <img src="./assest/icons/Star.svg" alt="star">
+              <img src="./assest/icons/Star.svg" alt="star">
+              <img src="./assest/icons/Star.svg" alt="star">
+            </div>
+            <div class="review-card__user">
+              <span class="review-card__name">Mooen</span>
+              <img class="review-card__verified" src="./assest/icons/True.svg" alt="verified">
+            </div>
+            <p class="review-card__text">
+              "As someone who's always on the lookout for unique fashion pieces, I'm thrilled to have stumbled upon
+              Shop.co. The selection of clothes is not only diverse but also on-point with the latest trends.”
             </p>
           </article>
         </div>

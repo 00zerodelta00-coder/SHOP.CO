@@ -117,7 +117,12 @@ function createProductCard(product, index) {
                     data-size="${defaultSize}"
                     data-color="${defaultColor}"
                 >
-                    Add to Cart
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="9" cy="21" r="1"></circle>
+                        <circle cx="20" cy="21" r="1"></circle>
+                        <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+                    </svg>
+                    <span>Add to Cart</span>
                 </button>
             </article>
         </li>
@@ -164,6 +169,36 @@ async function loadHomeSection(containerId, params) {
         container.innerHTML = '<li class="error">не удалось загрузить подборку товаров</li>';
         showToast('ошибка загрузки товаров с сервера', 'error');
     }
+}
+
+// циклическая прокрутка отзывов по клику на стрелки влево и вправо на главной странице
+function initReviewsSlider() {
+    const list = document.getElementById('reviewsList');
+    const prevBtn = document.querySelector('.reviews__arrow--prev');
+    const nextBtn = document.querySelector('.reviews__arrow--next');
+    if (!list || !prevBtn || !nextBtn) return;
+
+    function updateSideBlur() {
+        const cards = Array.from(list.querySelectorAll('.review-card'));
+        cards.forEach((card, idx) => {
+            const isEdge = idx === 0 || idx === cards.length - 1;
+            card.classList.toggle('review-card--side', isEdge);
+        });
+    }
+
+    nextBtn.addEventListener('click', () => {
+        if (list.firstElementChild) {
+            list.appendChild(list.firstElementChild);
+            updateSideBlur();
+        }
+    });
+
+    prevBtn.addEventListener('click', () => {
+        if (list.lastElementChild) {
+            list.prepend(list.lastElementChild);
+            updateSideBlur();
+        }
+    });
 }
 
 // --- логика каталога (Category.html) ---
@@ -304,7 +339,30 @@ function initGalleryThumbs(mainImageEl) {
     });
 }
 
-// загружает один товар по id из адресной строки и настраивает выбор цвета размера и добавление в корзину
+// переключение вкладок Product Details / Rating & Reviews / FAQs
+function initProductTabs() {
+    const tabBtns = document.querySelectorAll('.details-tabs__tab');
+    const panels = {
+        details: document.getElementById('tabPanelDetails'),
+        reviews: document.getElementById('tabPanelReviews'),
+        faqs: document.getElementById('tabPanelFaqs'),
+    };
+    if (!tabBtns.length) return;
+
+    tabBtns.forEach((btn) => {
+        btn.addEventListener('click', () => {
+            const target = btn.dataset.tab;
+            tabBtns.forEach((b) => b.classList.remove('details-tabs__tab--active'));
+            btn.classList.add('details-tabs__tab--active');
+
+            Object.entries(panels).forEach(([key, panelEl]) => {
+                if (panelEl) panelEl.hidden = key !== target;
+            });
+        });
+    });
+}
+
+// загружает один товар по id из адресной строки и настраивает вкладки цвета размеры и корзину
 async function initProductDetailPage() {
     const titleEl = document.getElementById('productTitle');
     // если заголовка товара нет значит мы не на странице Product.html
@@ -318,6 +376,12 @@ async function initProductDetailPage() {
     let selectedColor = '';
     let selectedSize = '';
     let quantity = 1;
+
+    const productViewSection = document.getElementById('productViewSection');
+    const detailsTabsSection = document.getElementById('detailsTabsSection');
+    const tabPanelReviews = document.getElementById('tabPanelReviews');
+    const productErrorState = document.getElementById('productErrorState');
+    const productErrorText = document.getElementById('productErrorText');
 
     const mainImageEl = document.getElementById('mainProductImage');
     const thumbImgs = [
@@ -340,6 +404,7 @@ async function initProductDetailPage() {
     const btnAddToCart = document.getElementById('btnAddToCart');
 
     initGalleryThumbs(mainImageEl);
+    initProductTabs();
 
     try {
         // запрашиваем данные конкретного товара с бэкенда
@@ -388,11 +453,30 @@ async function initProductDetailPage() {
 
         if (descEl) descEl.textContent = product.description || '';
 
+        // заполняем вкладку Product Details характеристиками товара с сервера
+        const tabDescEl = document.getElementById('tabDetailsDescription');
+        const tabSpecsEl = document.getElementById('tabDetailsSpecs');
+        const colorsList = Array.isArray(product.colors) && product.colors.length ? product.colors : ['Black'];
+        const sizesList = Array.isArray(product.sizes) && product.sizes.length ? product.sizes : ['Large'];
+
+        if (tabDescEl) {
+            tabDescEl.textContent = product.description || 'High quality everyday garment crafted with care.';
+        }
+        if (tabSpecsEl) {
+            tabSpecsEl.innerHTML = `
+                <li><span>Category</span><strong>${product.category || 'Casual'}</strong></li>
+                <li><span>Style</span><strong>${product.style || 'Casual'}</strong></li>
+                <li><span>Available Sizes</span><strong>${sizesList.join(', ')}</strong></li>
+                <li><span>Available Colors</span><strong>${colorsList.join(', ')}</strong></li>
+                <li><span>Rating</span><strong>${product.rating ?? 0} / 5</strong></li>
+                <li><span>Article ID</span><strong>#${product.id}</strong></li>
+            `;
+        }
+
         // отрисовываем доступные цвета товара через БЭМ модификаторы без инлайн стилей
-        const colors = Array.isArray(product.colors) && product.colors.length ? product.colors : ['black'];
-        selectedColor = colors[0];
+        selectedColor = colorsList[0];
         if (colorPickerEl) {
-            colorPickerEl.innerHTML = colors.map((color, idx) => {
+            colorPickerEl.innerHTML = colorsList.map((color, idx) => {
                 const normalized = color.toLowerCase();
                 const colorModifier = SUPPORTED_COLORS.includes(normalized)
                     ? `color-btn--${normalized}`
@@ -427,10 +511,9 @@ async function initProductDetailPage() {
         }
 
         // отрисовываем доступные размеры товара и выбираем первый по умолчанию
-        const sizes = Array.isArray(product.sizes) && product.sizes.length ? product.sizes : ['Large'];
-        selectedSize = sizes[0];
+        selectedSize = sizesList[0];
         if (sizePickerEl) {
-            sizePickerEl.innerHTML = sizes.map((size, idx) => `
+            sizePickerEl.innerHTML = sizesList.map((size, idx) => `
                 <button type="button" class="size-btn ${idx === 0 ? 'size-btn--active' : ''}" data-size="${size}">${size}</button>
             `).join('');
 
@@ -475,18 +558,33 @@ async function initProductDetailPage() {
             });
         }
 
-        // подгружаем похожие товары из той же категории в нижний блок
+        // похожие товары: сначала берем из той же категории и если меньше 4 — добиваем из общего списка
         const relatedGrid = document.getElementById('relatedProductsGrid');
         if (relatedGrid) {
-            const relatedRes = await getProducts({ category: product.category, limit: 4 });
-            const relatedItems = (relatedRes.items || []).filter((item) => item.id !== product.id).slice(0, 4);
-            if (relatedItems.length > 0) {
-                relatedGrid.innerHTML = relatedItems.map((p, idx) => createProductCard(p, idx)).join('');
+            const relatedRes = await getProducts({ category: product.category, limit: 5 });
+            let relatedItems = (relatedRes.items || []).filter((item) => item.id !== product.id);
+
+            if (relatedItems.length < 4) {
+                const fallbackRes = await getProducts({ limit: 8 });
+                const usedIds = new Set([product.id, ...relatedItems.map((i) => i.id)]);
+                const extraItems = (fallbackRes.items || []).filter((item) => !usedIds.has(item.id));
+                relatedItems = [...relatedItems, ...extraItems];
             }
+
+            relatedGrid.innerHTML = relatedItems
+                .slice(0, 4)
+                .map((p, idx) => createProductCard(p, idx))
+                .join('');
         }
     } catch (error) {
         console.error('ошибка загрузки страницы товара:', error);
-        titleEl.textContent = 'Product not found';
+        if (productViewSection) productViewSection.hidden = true;
+        if (detailsTabsSection) detailsTabsSection.hidden = true;
+        if (tabPanelReviews) tabPanelReviews.hidden = true;
+        if (productErrorState) productErrorState.hidden = false;
+        if (productErrorText) {
+            productErrorText.textContent = `Не удалось загрузить товар #${productId}: ${error.message}`;
+        }
         showToast('не удалось загрузить информацию о товаре', 'error');
     }
 }
@@ -494,6 +592,7 @@ async function initProductDetailPage() {
 // общая точка запуска всех функций для товаров на страницах
 function initApp() {
     initCardCartEvents();
+    initReviewsSlider();
     initPaginationEvents();
     loadCatalogPage(1);
     initProductDetailPage();
